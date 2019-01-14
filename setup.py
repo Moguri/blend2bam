@@ -24,7 +24,9 @@ class bdist_wheel(_bdist_wheel):
 
 class build_blender(Command):
     description = 'Download and extract Blender'
-    user_options = []
+    user_options = [
+        ('platform=', None, 'platform to fetch Blender for'),
+    ]
 
     def initialize_options(self):
         self.platform = None
