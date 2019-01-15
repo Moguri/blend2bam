@@ -19,11 +19,17 @@ def get_blender_download_platform(platform):
         'linux_i386': 'linux-glibc219-i686',
         'win_amd64': 'windows64',
         'win32': 'windows32',
+        'macosx_10_6_x86_64': 'macOS-10.6',
     }[platform]
 
 
 def get_blender_download_extension(platform):
-    return 'tar.bz2' if platform.startswith('linux') else 'zip'
+    if platform.startswith('linux'):
+        return 'tar.bz2'
+    elif platform.startswith('mac'):
+        return 'dmg'
+    else:
+        return 'zip'
 
 
 def get_blender_download_name(platform, version):

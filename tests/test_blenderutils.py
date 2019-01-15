@@ -19,6 +19,7 @@ def test_blender_download_info():
         'linux_i386': DownloadInfo('linux-glibc219-i686', 'tar.bz2'),
         'win_amd64': DownloadInfo('windows64', 'zip'),
         'win32': DownloadInfo('windows32', 'zip'),
+        'macosx_10_6_x86_64': DownloadInfo('macOS-10.6', 'dmg'),
     }
 
     for plat, dl_info in plat_dl_map.items():
