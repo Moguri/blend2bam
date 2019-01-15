@@ -1,6 +1,7 @@
 import os
 import shutil
 import subprocess
+import tempfile
 import urllib.request
 
 
@@ -12,12 +13,17 @@ def get_blender_download_mirror():
     return 'https://mirror.clarkson.edu/blender/release'
 
 
-def get_blender_download_platform(_platform):
-    return 'linux-glibc219-x86_64'
+def get_blender_download_platform(platform):
+    return {
+        'linux_x86_64': 'linux-glibc219-x86_64',
+        'linux_i386': 'linux-glibc219-i686',
+        'win_amd64': 'windows64',
+        'win32': 'windows32',
+    }[platform]
 
 
-def get_blender_download_extension(_platform):
-    return 'tar.bz2'
+def get_blender_download_extension(platform):
+    return 'tar.bz2' if platform.startswith('linux') else 'zip'
 
 
 def get_blender_download_name(platform, version):
@@ -43,15 +49,27 @@ def check_cache(cache_dir, package_name):
     )
 
 def extract_blender(download_file, output_dir):
-    os.makedirs(output_dir, exist_ok=True)
+    shutil.rmtree(output_dir, ignore_errors=True)
     if download_file.endswith('.tar.bz2'):
+        os.makedirs(output_dir, exist_ok=True)
         subprocess.call(['tar', 'xf', download_file, '--strip-components', '1', '-C', output_dir])
+    elif download_file.endswith('.zip'):
+        import zipfile
+        with zipfile.ZipFile(download_file) as zfile:
+            with tempfile.TemporaryDirectory() as tmpdir:
+                zfile.extractall(tmpdir)
+                src = os.path.join(tmpdir, os.path.basename(download_file).replace('.zip', ''))
+                shutil.move(src, output_dir)
     else:
         raise RuntimeError('Could not determine a way to extract {}'.format(download_file))
 
 
 def cleanup_blender(output_dir):
-    os.remove(os.path.join(output_dir, 'blenderplayer'))
+    bppath = os.path.join(output_dir, 'blenderplayer')
+    if os.path.exists(bppath):
+        os.remove(bppath)
+    else:
+        os.remove(bppath+'.exe')
 
     configs = os.path.join(
         output_dir,
@@ -62,8 +80,10 @@ def cleanup_blender(output_dir):
         configs,
         'python',
         'lib',
-        'python3.5',
     )
+    pylibs_versioned = os.path.join(pylibs, 'python3.5')
+    if os.path.exists(pylibs_versioned):
+        pylibs = pylibs_versioned
     shutil.rmtree(os.path.join(pylibs, 'site-packages'))
 
     addons = os.path.join(

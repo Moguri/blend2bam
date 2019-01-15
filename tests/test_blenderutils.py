@@ -16,6 +16,9 @@ def test_blender_present():
 def test_blender_download_info():
     plat_dl_map = {
         'linux_x86_64': DownloadInfo('linux-glibc219-x86_64', 'tar.bz2'),
+        'linux_i386': DownloadInfo('linux-glibc219-i686', 'tar.bz2'),
+        'win_amd64': DownloadInfo('windows64', 'zip'),
+        'win32': DownloadInfo('windows32', 'zip'),
     }
 
     for plat, dl_info in plat_dl_map.items():
