@@ -69,7 +69,7 @@ def extract_blender(download_file, output_dir):
             import zipfile
             with zipfile.ZipFile(download_file) as zfile:
                 zfile.extractall(tmpdir)
-            dlbase = dlbase.replace('zip', '')
+            dlbase = dlbase.replace('.zip', '')
         else:
             raise RuntimeError('Could not determine a way to extract {}'.format(download_file))
         src = os.path.join(tmpdir, dlbase)
