@@ -49,19 +49,25 @@ def check_cache(cache_dir, package_name):
     )
 
 def extract_blender(download_file, output_dir):
+    dlbase = os.path.basename(download_file)
+
     shutil.rmtree(output_dir, ignore_errors=True)
-    if download_file.endswith('.tar.bz2'):
-        os.makedirs(output_dir, exist_ok=True)
-        subprocess.call(['tar', 'xf', download_file, '--strip-components', '1', '-C', output_dir])
-    elif download_file.endswith('.zip'):
-        import zipfile
-        with zipfile.ZipFile(download_file) as zfile:
-            with tempfile.TemporaryDirectory() as tmpdir:
+
+    with tempfile.TemporaryDirectory() as tmpdir:
+        if download_file.endswith('.tar.bz2'):
+            import tarfile
+            with tarfile.open(download_file) as tfile:
+                tfile.extractall(tmpdir)
+            dlbase = dlbase.replace('.tar.bz2', '')
+        elif download_file.endswith('.zip'):
+            import zipfile
+            with zipfile.ZipFile(download_file) as zfile:
                 zfile.extractall(tmpdir)
-                src = os.path.join(tmpdir, os.path.basename(download_file).replace('.zip', ''))
-                shutil.move(src, output_dir)
-    else:
-        raise RuntimeError('Could not determine a way to extract {}'.format(download_file))
+            dlbase = dlbase.replace('zip', '')
+        else:
+            raise RuntimeError('Could not determine a way to extract {}'.format(download_file))
+        src = os.path.join(tmpdir, dlbase)
+        shutil.move(src, output_dir)
 
 
 def cleanup_blender(output_dir):
