@@ -6,7 +6,7 @@ import bpy #pylint: disable=import-error
 
 
 def export_gltf(src, dst):
-    print('Converting .blend file ({}) to .bam ({})'.format(src, dst))
+    print('Converting .blend file ({}) to .gltf ({})'.format(src, dst))
 
     # Lazy-load blendergltf
     scriptdir = os.path.dirname(__file__)
