@@ -1,3 +1,4 @@
+import argparse
 import os
 import sys
 import tempfile
@@ -7,19 +8,9 @@ from .blend2gltf import ConverterBlend2Gltf
 from .gltf2bam import ConverterGltf2Bam
 
 
-def main():
+def convert(src, dst):
     blend2gltf = ConverterBlend2Gltf()
     gltf2bam = ConverterGltf2Bam()
-
-    if len(sys.argv) < 2:
-        print('Missing source')
-        sys.exit(1)
-    if len(sys.argv) < 3:
-        print('Missing missing destination')
-        sys.exit(1)
-
-    src = os.path.abspath(sys.argv[1])
-    dst = os.path.abspath(sys.argv[2])
 
     if not os.path.exists(src):
         print('Source ({}) does not exist'.format(src))
@@ -57,3 +48,18 @@ def main():
         with tempfile.NamedTemporaryFile() as tmpfile:
             blend2gltf.convert_single(src, tmpfile.name)
             gltf2bam.convert_single(tmpfile.name, dst)
+
+def main():
+    parser = argparse.ArgumentParser(
+        description='CLI tool to convert Blender blend files to Panda3D BAM files'
+    )
+
+    parser.add_argument('src', type=str, help='source path')
+    parser.add_argument('dst', type=str, help='destination path')
+
+    args = parser.parse_args()
+
+    src = os.path.abspath(args.src)
+    dst = os.path.abspath(args.dst)
+
+    convert(src, dst)
