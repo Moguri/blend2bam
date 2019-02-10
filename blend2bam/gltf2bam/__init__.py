@@ -4,22 +4,24 @@ import sys
 
 import panda3d.core as p3d
 
-class ConverterGltf2Bam:
-    def convert_single(self, infile, outfile):
+from blend2bam.common import ConverterBase
+
+class ConverterGltf2Bam(ConverterBase):
+    def convert_single(self, src, dst):
         scriptdir = os.path.dirname(os.path.abspath(__file__))
         sys.path.insert(0, os.path.join(scriptdir, 'panda3d-gltf'))
         from gltf.converter import Converter #pylint: disable=import-error
 
-        dstdir = os.path.dirname(outfile)
+        dstdir = os.path.dirname(dst)
         os.makedirs(dstdir, exist_ok=True)
 
-        with open(infile) as gltf_file:
+        with open(src) as gltf_file:
             gltf_data = json.load(gltf_file)
 
-        dstfname = p3d.Filename.fromOsSpecific(outfile)
+        dstfname = p3d.Filename.fromOsSpecific(dst)
         p3d.get_model_path().prepend_directory(dstfname.getDirname())
 
-        indir = p3d.Filename(p3d.Filename.from_os_specific(infile).get_dirname())
+        indir = p3d.Filename(p3d.Filename.from_os_specific(src).get_dirname())
         outdir = p3d.Filename(dstfname.get_dirname())
 
         converter = Converter(indir=indir, outdir=outdir)

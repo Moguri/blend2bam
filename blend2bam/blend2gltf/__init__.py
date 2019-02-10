@@ -2,8 +2,9 @@ import os
 import shutil
 
 from blend2bam import blenderutils
+from blend2bam.common import ConverterBase
 
-class ConverterBlend2Gltf:
+class ConverterBlend2Gltf(ConverterBase):
     script_file = os.path.join(os.path.dirname(__file__), 'blender_script.py')
 
     def convert_single(self, src, dst):
