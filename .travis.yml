@@ -5,7 +5,7 @@ python:
   - '3.6'
   - '3.7'
 before_install:
-    - sudo apt-get install -y blender
+  - sudo apt-get install -y blender
 script: python setup.py test
 before_deploy: python setup.py sdist bdist_wheel
 deploy:
@@ -18,7 +18,7 @@ deploy:
       python: '3.7'
     user: Moguri
     password:
-      secure: NVBgAwx3eQXlLjvD8Dao/5L6fOwxVSbINsBXx0nopbDZGdr7N+M6xpyW0B3Vshl7vhZ2UER6P4gxYJk9lPCROTcfO1G/TCon6kJPRc9q3f8pVZsS4amU4GXEWDDrxj6zaA7/QGqFK+nw38z1CYUdERR7mQ1OU5r/JxkpnnTvOhBhNBb86AAfcEKbgDUzVcGY6dzv/YCxJxv4bGJWeWveEYlD+y+gbRG3RRIJdIPHrrvYQA6dLM3/2nG4Qnx7r6X5zSpJAcwWvXxgCpoA+uYFx6Dnok/mJt7CJ62eA2Y7lPfWskUvrWXTVPZ5M4j1l4PnlKQD9PWjcQlloLMN9CHcU2XMUDKXW4NAfQUL1JDWVdDqctBaq4QTbDFrU+sePX5msse6zCyRyG5ZAY9Ngf8IyAt9AdlHSZG+6jzLBoGVSGjpy6GVbjWgfV4rHhF2gDxB0ZQS0+7dzIItGnQ6LmQN9nBcx7JdF8fzMR5aOORSSYhBhn9uP6ZuDb+oGynqh0pr5R0pVhJwK22WI2Wd02bSfnK9g79YtEAsw7662svK5fFCuMXc8sIhusR5wSalor9KhvAwuQjIz3TJCqvJH3ObcNEAvddUroVwaPtUcBiXDth02fF1PJcBM1miD2d/gu1TBRdAxP9Qp6tCVjSKe1fANU7DYRHDZvGamzeOSgq4fCs=
+      secure: cPj9ksZTmc04S4NOszdIV39R2XNTJbeppCkVlOrowgG0nAOD08jUiZo0NAjqK4Sb6zWiEPByiGKjmes1xfF6vca/3RsV/TrUQVOjd0V1EuNkdTOlPdsMiBrmFmj0ekNwIjQyqsmUGwYLbytzRcP3wA255md6oCuf9jsNU8ZZqW4fjmOs8XNGJUDw7SijDmjC7EMSrxr6zFOMCI8xQQsn/Nx/M2M+j3a3hbxoMC+01bTwvMdC/eYBduyk0aI8pnX/q75DjLGXssz0tU/e3Wl9BhmSirw3X31ZhzovWuyqzPuBdK8BwHpW6uXTEMLOj1SZPPlsvKH9Jcq5XquBAEUZaLBcTrSb98q7S9hds/ht6sSmj+40KrD8pGGstn4cf9HKBCwWSY8O/3bduvvpeRqUeFKHfHwtZSE6LF+U5cYRt+cJ4IVJcg0sl6wCrc8UndOuO78OS4ynfj4SNk+eEKlGu7CDRb9l5Ptnpqe0dB0Pelji/6zHxfd2yDB6+UOrWCe0xKwG6g1tpnS/La+TMjCllBYBsCWo/FsUyTdZjx3QjMRjjRjPwzJZ3VXAnnTuonow7n15+tD8pUCURjOVE/G6kMalHHzMfoIGNq8wssOEy4ZKgAk0B8UjorMLUu+FjnFFI/D6eXp6W0cc7So7xNkZap5DJAd9jV//Imf+qy4Kzys=
     distributions: sdist bdist_wheel
   - provider: releases
     on:
@@ -27,6 +27,6 @@ deploy:
         python: '3.7'
     skip_cleanup: true
     api_key:
-        secure: r80kvoY6STRU+KZwgR7ViueGwy1xy0Uwf5EtAGjK56Kfkz2oeEIykGqKOVxSVg1oP64wuemFr+WpnZA5TUDDZVLUR58zFAmYGmuiYlZ70JHZHNF+5oPX5n6a0ANTRsc+ZbothcgfNj+mB9g65eBsSNs7nFkO8F1bYJ9wcHDyKseL99JKZWbJrsqhpa8eAimgKPhizvj7b2dUbN9zKyVNmBkbl1LRfq3BsRthT/SekjlM+n4I5ZdYq+sOI8c2wuww4BWTJBteZeh6dy2xGKBaOx6JkLrKMj1t1UGaaMBKApNw8JSZ8z/x7RHk+BffFKQzkOdhluTC9PzRnW4AWn+nOOO4PzvfRPqoGianyRq488XQC8SMRa8aVUDsd9KchggfccLFUX+Pek8kKPYK/CL7HEBviWtJVoMb9d4FnwJwG3ef+xCKRq4bbsUMQEs+API2a8AQybuK+VIp2q/SHtKr/ODvuqmhdbFX4dXuUfoBvWCbk2yUyb+OzjtkGXN5VYKJsEmxyiE4mk/D/dYXFuJIE9UlhNHLxoOnWqjTHnNzK2LoWRbDM8VhxtQMLz10qb8O+npwp6x31hiaLXknJqaQKzVhX1FuCOtfRxh81Va63hE/YtoQQU3JWRzHV1KKubr9Zb4M7AUH2Al84PmhWAE1Ps3iTUTl1bIG4vH0oHCNnWg=
+        secure: Cqi4CfzOfZdjqPMw3t2zsU4da3Qp9prqXfBrmzVli5qlzZUjbwgII0++bX9OOKBv+cCjzzES5wf1iegpso5ygw+jlr4c5qix3+B3V7jDzGJ9+tqtUPyu+sn65yVA2P8Tg5OYJ1Txe9APVdnpxY2qHWl4zSaNsWCOZwU06nNpjUy3/01pOl9yxW80X3zmhjO2YCRiNfErxMa6q6n+wSmky3aQgwawgjkJyvjSOYb6qLMV+BLVP31pi/IDQXN3gRxqnpfN9NP/8xlyV+YJI81sWK3rVds2/RGBZbBldc0cqkig99EmN/J4ijjqil8q2d2cyKOeHFzswc/fMN+0EqMXpe0J+PFuowPSKQXqHGlDfRd499LwSC8CeSjBU7AYhBaXDpfj7kLBpdz8YBcijm4t2Zn5BbTOcKhkK+LUiz5c98jC6ZWivjJdqirIoUkd8yVkE8rythSXKbyyniLAK6XeLHxIdATVHf8/lGM+7kF5N6dti6IgThT+bgh0G/XQp3pHveGs1t5EaT1mXYP8fVlxwiSHPJKT0z0siv+RUYjvLvIGiaPlZGKTR4tFPbID3snPR0KKwzNLZsgS5yiQyriI9dIEEPpHjK28jp53gYysE5r/yBr+k7gJxOmNjwpIV7NEvLjeQgb8lCT2zXhFHrrnkM+7oMnJSLs0nV4sDjc5vm0=
     file_glob: true
     file: dist/*
