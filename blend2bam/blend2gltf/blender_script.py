@@ -5,7 +5,7 @@ import sys
 import bpy #pylint: disable=import-error
 
 
-def export_gltf(src, dst):
+def export_gltf(settings, src, dst):
     print('Converting .blend file ({}) to .gltf ({})'.format(src, dst))
 
     # Lazy-load blendergltf
@@ -28,7 +28,6 @@ def export_gltf(src, dst):
             available_extensions.khr_lights.KhrLights(),
             available_extensions.blender_physics.BlenderPhysics(),
             ExtZup(),
-            ExtMaterialsLegacy(),
         ],
         'gltf_output_dir': dstdir,
         'images_data_storage': 'REFERENCE',
@@ -36,7 +35,10 @@ def export_gltf(src, dst):
 
     }
 
-    colecctions = [
+    if settings['material_mode'] == 'legacy':
+        gltf_settings['extension_exporters'].append(ExtMaterialsLegacy())
+
+    collections = [
         "actions",
         "cameras",
         "images",
@@ -49,7 +51,7 @@ def export_gltf(src, dst):
     ]
     scene = {
         cname: list(getattr(bpy.data, cname))
-        for cname in colecctions
+        for cname in collections
     }
     gltfdata = blendergltf.blendergltf.export_gltf(scene, gltf_settings)
 
@@ -61,18 +63,21 @@ def main():
     args = sys.argv[sys.argv.index('--')+1:]
 
     #print(args)
-    srcroot, dstdir, blendfiles = args[0], args[1], args[2:]
+    settings_fname, srcroot, dstdir, blendfiles = args[0], args[1], args[2], args[3:]
 
     print('srcroot:', srcroot)
     print('Exporting:', blendfiles)
     print('Export to:', dstdir)
+
+    with open(settings_fname) as settings_file:
+        settings = json.load(settings_file)
 
     for blendfile in blendfiles:
         src = blendfile
         dst = src.replace(srcroot, dstdir).replace('.blend', '.gltf')
 
         bpy.ops.wm.open_mainfile(filepath=src)
-        export_gltf(src, dst)
+        export_gltf(settings, src, dst)
 
 
 if __name__ == '__main__':

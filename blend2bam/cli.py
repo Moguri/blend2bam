@@ -6,11 +6,12 @@ import tempfile
 
 from .blend2gltf import ConverterBlend2Gltf
 from .gltf2bam import ConverterGltf2Bam
+from .common import Settings
 
 
-def convert(src, dst):
-    blend2gltf = ConverterBlend2Gltf()
-    gltf2bam = ConverterGltf2Bam()
+def convert(settings, src, dst):
+    blend2gltf = ConverterBlend2Gltf(settings)
+    gltf2bam = ConverterGltf2Bam(settings)
 
     if not os.path.exists(src):
         print('Source ({}) does not exist'.format(src))
@@ -57,9 +58,23 @@ def main():
     parser.add_argument('src', type=str, help='source path')
     parser.add_argument('dst', type=str, help='destination path')
 
+    parser.add_argument(
+        '-m', '--material_mode',
+        choices=[
+            'legacy',
+            'pbr',
+        ],
+        default='legacy',
+        help='control how materials are exported'
+    )
+
     args = parser.parse_args()
 
     src = os.path.abspath(args.src)
     dst = os.path.abspath(args.dst)
 
-    convert(src, dst)
+    settings = Settings(
+        material_mode=args.material_mode
+    )
+
+    convert(settings, src, dst)

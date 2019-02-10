@@ -1,5 +1,7 @@
 import os
+import json
 import shutil
+import tempfile
 
 from blend2bam import blenderutils
 from blend2bam.common import ConverterBase
@@ -19,4 +21,12 @@ class ConverterBlend2Gltf(ConverterBase):
         shutil.move(dstout, dst)
 
     def convert_batch(self, srcroot, dstdir, files):
-        blenderutils.run_blender_script(self.script_file, [srcroot, dstdir] + files)
+        with tempfile.NamedTemporaryFile() as tmpfile:
+            with open(tmpfile.name, 'w') as settings_file:
+                json.dump(self.settings._asdict(), settings_file)
+            args = [
+                tmpfile.name,
+                srcroot,
+                dstdir,
+            ] + files
+            blenderutils.run_blender_script(self.script_file, args)
