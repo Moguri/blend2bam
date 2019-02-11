@@ -68,13 +68,20 @@ def main():
         help='control how materials are exported'
     )
 
+    parser.add_argument(
+        '--blender-dir',
+        default='',
+        help='directory that contains the blender binary'
+    )
+
     args = parser.parse_args()
 
     src = os.path.abspath(args.src)
     dst = os.path.abspath(args.dst)
 
     settings = Settings(
-        material_mode=args.material_mode
+        material_mode=args.material_mode,
+        blender_dir=args.blender_dir
     )
 
     convert(settings, src, dst)

@@ -2,9 +2,11 @@ from collections import namedtuple
 
 Settings = namedtuple('Settings', (
     'material_mode',
+    'blender_dir',
 ))
 Settings.__new__.__defaults__ = (
     'legacy', # material_mode
+    '', # blender_dir
 )
 
 class ConverterBase:

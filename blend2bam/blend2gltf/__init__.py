@@ -21,6 +21,7 @@ class ConverterBlend2Gltf(ConverterBase):
         shutil.move(dstout, dst)
 
     def convert_batch(self, srcroot, dstdir, files):
+        blenderdir = self.settings.blender_dir
         with tempfile.NamedTemporaryFile() as tmpfile:
             with open(tmpfile.name, 'w') as settings_file:
                 json.dump(self.settings._asdict(), settings_file)
@@ -29,4 +30,4 @@ class ConverterBlend2Gltf(ConverterBase):
                 srcroot,
                 dstdir,
             ] + files
-            blenderutils.run_blender_script(self.script_file, args)
+            blenderutils.run_blender_script(self.script_file, args, blenderdir=blenderdir)
