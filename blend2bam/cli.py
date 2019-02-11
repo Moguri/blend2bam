@@ -72,7 +72,7 @@ def main():
     parser.add_argument('dst', type=str, help='destination path')
 
     parser.add_argument(
-        '-m', '--material_mode',
+        '-m', '--material-mode',
         choices=[
             'legacy',
             'pbr',
