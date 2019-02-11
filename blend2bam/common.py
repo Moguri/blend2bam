@@ -1,13 +1,10 @@
 from collections import namedtuple
 
-Settings = namedtuple(
-    'Settings',
-    [
-        'material_mode',
-    ],
-    defaults=[
-        'legacy',
-    ]
+Settings = namedtuple('Settings', (
+    'material_mode',
+))
+Settings.__new__.__defaults__ = (
+    'legacy', # material_mode
 )
 
 class ConverterBase:
