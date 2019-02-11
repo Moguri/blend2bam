@@ -9,7 +9,7 @@ from .gltf2bam import ConverterGltf2Bam
 from .common import Settings
 
 
-def convert(settings, src, dst):
+def convert(settings, srcdir, src, dst):
     blend2gltf = ConverterBlend2Gltf(settings)
     gltf2bam = ConverterGltf2Bam(settings)
 
@@ -39,7 +39,6 @@ def convert(settings, src, dst):
                 if i.endswith('.blend')
             ]
     else:
-        srcdir = os.path.commonpath(src)
         files_to_convert = [os.path.abspath(i) for i in src]
 
     is_batch = len(files_to_convert) > 1
@@ -83,6 +82,12 @@ def main():
     )
 
     parser.add_argument(
+        '--srcdir',
+        default=None,
+        help='a common source directory to use when specifying multiple source files'
+    )
+
+    parser.add_argument(
         '--blender-dir',
         default='',
         help='directory that contains the blender binary'
@@ -91,6 +96,7 @@ def main():
     args = parser.parse_args()
 
     src = [os.path.abspath(i) for i in args.src]
+    srcdir = args.srcdir if args.srcdir is not None else os.path.commonpath(src)
     dst = os.path.abspath(args.dst)
 
     settings = Settings(
@@ -98,4 +104,4 @@ def main():
         blender_dir=args.blender_dir
     )
 
-    convert(settings, src, dst)
+    convert(settings, srcdir, src, dst)
