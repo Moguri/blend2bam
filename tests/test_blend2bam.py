@@ -112,3 +112,19 @@ def test_cli_dir_to_dir():
     assert os.path.exists(DSTDIR)
     assert not os.path.exists(os.path.join(DSTDIR, 'test.gltf'))
     assert os.path.exists(os.path.join(DSTDIR, 'test.bam'))
+
+def test_cli_many_to_dir():
+    shutil.rmtree(DSTDIR, ignore_errors=True)
+    args = [
+        'python',
+        os.path.join(SRCDIR, 'test.blend'),
+        os.path.join(SRCDIR, 'test2.blend'),
+        DSTDIR,
+    ]
+    sys.argv = args
+    blend2bam.cli.main()
+    assert os.path.exists(DSTDIR)
+    assert not os.path.exists(os.path.join(DSTDIR, 'test.gltf'))
+    assert not os.path.exists(os.path.join(DSTDIR, 'test2gltf'))
+    assert os.path.exists(os.path.join(DSTDIR, 'test.bam'))
+    assert os.path.exists(os.path.join(DSTDIR, 'test2.bam'))

@@ -13,41 +13,55 @@ def convert(settings, src, dst):
     blend2gltf = ConverterBlend2Gltf(settings)
     gltf2bam = ConverterGltf2Bam(settings)
 
-    if not os.path.exists(src):
-        print('Source ({}) does not exist'.format(src))
-        sys.exit(1)
+    for src_element in src:
+        if not os.path.exists(src_element):
+            print('Source ({}) does not exist'.format(src_element))
+            sys.exit(1)
 
-    src_is_dir = os.path.isdir(src)
+        if len(src) > 1 and not os.path.isfile(src_element):
+            print('Source ({}) is not a file'.format(src_element))
+            sys.exit(1)
+
+        if len(src) == 1 and not (os.path.isfile(src_element) or os.path.isdir(src_element)):
+            print('Source ({}) must be a file or a directory'.format(src))
+            sys.exit(1)
+
+    src_is_dir = os.path.isdir(src[0])
     dst_is_dir = not os.path.splitext(dst)[1]
 
-    if not os.path.isfile(src) and not src_is_dir:
-        print('Source ({}) must be a file or a directory'.format(src))
-        sys.exit(1)
-
-    if src_is_dir and not dst_is_dir:
-        print('Destination must be a directory if the source is a directory')
-
+    files_to_convert = []
     if src_is_dir:
-        # Batch conversion
-        files_to_convert = []
-        for root, _, files in os.walk(src):
+        srcdir = src[0]
+        for root, _, files in os.walk(srcdir):
             files_to_convert += [
                 os.path.join(root, i)
                 for i in files
                 if i.endswith('.blend')
             ]
-        blend2gltf.convert_batch(src, dst, files_to_convert)
-        tmpfiles = [i.replace(src, dst).replace('.blend', '.gltf') for i in files_to_convert]
+    else:
+        srcdir = os.path.commonpath(src)
+        files_to_convert = [os.path.abspath(i) for i in src]
+
+    is_batch = len(files_to_convert) > 1
+
+    if is_batch and not dst_is_dir:
+        print('Destination must be a directory if the source is a directory or multiple files')
+
+    if is_batch:
+        # Batch conversion
+        blend2gltf.convert_batch(srcdir, dst, files_to_convert)
+        tmpfiles = [i.replace(srcdir, dst).replace('.blend', '.gltf') for i in files_to_convert]
         gltf2bam.convert_batch(dst, dst, tmpfiles)
         _ = [os.remove(i) for i in tmpfiles]
     else:
         # Single file conversion
+        srcfile = files_to_convert[0]
         if dst_is_dir:
             # Destination is a directory, add a filename
-            dst = os.path.join(dst, os.path.basename(src.replace('blend', 'bam')))
+            dst = os.path.join(dst, os.path.basename(srcfile.replace('blend', 'bam')))
 
         with tempfile.NamedTemporaryFile() as tmpfile:
-            blend2gltf.convert_single(src, tmpfile.name)
+            blend2gltf.convert_single(srcfile, tmpfile.name)
             gltf2bam.convert_single(tmpfile.name, dst)
 
 def main():
@@ -55,7 +69,7 @@ def main():
         description='CLI tool to convert Blender blend files to Panda3D BAM files'
     )
 
-    parser.add_argument('src', type=str, help='source path')
+    parser.add_argument('src', nargs='+', type=str, help='source path')
     parser.add_argument('dst', type=str, help='destination path')
 
     parser.add_argument(
@@ -76,7 +90,7 @@ def main():
 
     args = parser.parse_args()
 
-    src = os.path.abspath(args.src)
+    src = [os.path.abspath(i) for i in args.src]
     dst = os.path.abspath(args.dst)
 
     settings = Settings(
