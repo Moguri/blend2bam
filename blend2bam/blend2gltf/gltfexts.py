@@ -46,28 +46,27 @@ class ExtMaterialsLegacy:
             }
         }
 
-        if diffuse_textures:
-            texture = diffuse_textures[-1]
-            use_srgb = texture.source.image.colorspace_settings.name == 'sRGB'
-            gltf['bpLegacy']['diffuseTexture'] = texture
-            gltf['bpLegacy']['diffuseTextureSrgb'] = use_srgb
-        if emission_textures:
-            texture = emission_textures[-1]
-            use_srgb = texture.source.image.colorspace_settings.name == 'sRGB'
-            gltf['bpLegacy']['emissionTexture'] = texture
-            gltf['bpLegacy']['emissionTextureSrgb'] = use_srgb
-        if specular_textures:
-            texture = specular_textures[-1]
-            use_srgb = texture.source.image.colorspace_settings.name == 'sRGB'
-            gltf['bpLegacy']['specularTexture'] = texture
-            gltf['bpLegacy']['specularTextureSrgb'] = use_srgb
+        def handle_tex(name, tex):
+            slotname = '{}Texture'.format(name)
+            gltf['bpLegacy'][slotname] = {
+                'index': tex,
+                'texCoord': 0, # FIXME
+            }
 
-        for prop in gltf['bpLegacy']:
-            if hasattr(gltf['bpLegacy'][prop], 'blender_type'):
-                ref = gltf['bpLegacy'][prop]
-                ref.source = gltf['bpLegacy']
-                ref.prop = prop
-                state['references'].append(ref)
+            use_srgb = tex.source.image.colorspace_settings.name == 'sRGB'
+            gltf['bpLegacy']['{}Srgb'.format(slotname)] = use_srgb
+
+            tex.source = gltf['bpLegacy'][slotname]
+            tex.prop = 'index'
+            state['references'].append(tex)
+
+
+        if diffuse_textures:
+            handle_tex('diffuse', diffuse_textures[-1])
+        if emission_textures:
+            handle_tex('emission', emission_textures[-1])
+        if specular_textures:
+            handle_tex('specular', specular_textures[-1])
 
         return gltf
 
