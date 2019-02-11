@@ -23,7 +23,6 @@ def export_gltf(settings, src, dst):
     os.makedirs(dstdir, exist_ok=True)
 
     gltf_settings = {
-        'asset_profile': 'DESKTOP',
         'extension_exporters': [
             available_extensions.khr_lights.KhrLights(),
             available_extensions.blender_physics.BlenderPhysics(),
@@ -33,7 +32,6 @@ def export_gltf(settings, src, dst):
         'images_data_storage': 'REFERENCE',
         'nodes_export_hidden': True,
         'meshes_interleave_vertex_data': False,
-
     }
 
     if settings['material_mode'] == 'legacy':
