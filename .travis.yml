@@ -5,6 +5,8 @@ python:
   - '3.6'
   - '3.7'
 before_install:
+  - sudo add-apt-repository ppa:thomas-schiex/blender-legacy -y
+  - sudo apt-get update -q
   - sudo apt-get install -y blender
 script: python setup.py test
 before_deploy: python setup.py sdist bdist_wheel
