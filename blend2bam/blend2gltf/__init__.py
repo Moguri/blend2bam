@@ -22,12 +22,13 @@ class ConverterBlend2Gltf(ConverterBase):
 
     def convert_batch(self, srcroot, dstdir, files):
         blenderdir = self.settings.blender_dir
-        with tempfile.NamedTemporaryFile() as tmpfile:
-            with open(tmpfile.name, 'w') as settings_file:
-                json.dump(self.settings._asdict(), settings_file)
-            args = [
-                tmpfile.name,
-                srcroot,
-                dstdir,
-            ] + files
-            blenderutils.run_blender_script(self.script_file, args, blenderdir=blenderdir)
+        settings_file = tempfile.NamedTemporaryFile(mode='w', delete=False)
+        json.dump(self.settings._asdict(), settings_file)
+        settings_file.close() # Close so the tempfile can be re-opened in Blender on Windows
+        args = [
+            settings_file.name,
+            srcroot,
+            dstdir,
+        ] + files
+        blenderutils.run_blender_script(self.script_file, args, blenderdir=blenderdir)
+        os.remove(settings_file.name)

@@ -59,9 +59,13 @@ def convert(settings, srcdir, src, dst):
             # Destination is a directory, add a filename
             dst = os.path.join(dst, os.path.basename(srcfile.replace('blend', 'bam')))
 
-        with tempfile.NamedTemporaryFile() as tmpfile:
+        tmpfile = tempfile.NamedTemporaryFile(delete=False)
+        tmpfile.close()
+        try:
             blend2gltf.convert_single(srcfile, tmpfile.name)
             gltf2bam.convert_single(tmpfile.name, dst)
+        finally:
+            os.remove(tmpfile.name)
 
 def main():
     parser = argparse.ArgumentParser(
