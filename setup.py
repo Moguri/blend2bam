@@ -21,7 +21,7 @@ setup(
         'Programming Language :: Python :: 3.7',
     ],
     keywords='panda3d gamedev',
-    url='https://github.com/Moguri/blend2bam',
+    url='https://github.com/Moguri/panda3d-blend2bam',
     author='Mitchell Stokes',
     license='MIT',
     packages=['blend2bam'],
