@@ -2,10 +2,12 @@ from collections import namedtuple
 
 Settings = namedtuple('Settings', (
     'material_mode',
+    'physics_engine',
     'blender_dir',
 ))
 Settings.__new__.__defaults__ = (
     'legacy', # material_mode
+    'builtin', # physics engine
     '', # blender_dir
 )
 
@@ -14,8 +16,7 @@ class ConverterBase:
 
     def __init__(self, settings=None):
         if settings is None:
-            settings = Settings(
-            )
+            settings = Settings()
         self.settings = settings
 
     def convert_single(self, src, dst):

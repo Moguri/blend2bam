@@ -90,3 +90,18 @@ class ExtZup:
 
     def export(self, state):
         state['extensions_used'].append('BP_zup')
+
+class ExtPhysicsEngine:
+    ext_meta = {
+        'name': 'BP_physics_engine',
+    }
+
+    def __init__(self, engine):
+        self.engine = engine
+
+    def export(self, state):
+        state['extensions_used'].append(self.ext_meta['name'])
+        state['output']['extensions'] = state['output'].get('extensions', {})
+        state['output']['extensions'][self.ext_meta['name']] = {
+            'engine':  self.engine
+        }

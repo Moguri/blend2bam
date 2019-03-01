@@ -86,6 +86,16 @@ def main():
     )
 
     parser.add_argument(
+        '--physics-engine',
+        choices=[
+            'builtin',
+            'bullet',
+        ],
+        default='builtin',
+        help='the physics engine to build collision solids for'
+    )
+
+    parser.add_argument(
         '--srcdir',
         default=None,
         help='a common source directory to use when specifying multiple source files'
@@ -105,7 +115,9 @@ def main():
 
     settings = Settings(
         material_mode=args.material_mode,
+        physics_engine=args.physics_engine,
         blender_dir=args.blender_dir
     )
+    print(settings)
 
     convert(settings, srcdir, src, dst)
