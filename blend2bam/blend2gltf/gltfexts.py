@@ -81,27 +81,3 @@ class ExtMaterialsLegacy:
         for bl_mat, gl_mat in material_pairs:
             gl_mat['extensions'] = gl_mat.get('extensions', {})
             gl_mat['extensions']['BP_materials_legacy'] = self.export_material(state, bl_mat)
-
-
-class ExtZup:
-    ext_meta = {
-        'name': 'BP_zup',
-    }
-
-    def export(self, state):
-        state['extensions_used'].append('BP_zup')
-
-class ExtPhysicsEngine:
-    ext_meta = {
-        'name': 'BP_physics_engine',
-    }
-
-    def __init__(self, engine):
-        self.engine = engine
-
-    def export(self, state):
-        state['extensions_used'].append(self.ext_meta['name'])
-        state['output']['extensions'] = state['output'].get('extensions', {})
-        state['output']['extensions'][self.ext_meta['name']] = {
-            'engine':  self.engine
-        }
