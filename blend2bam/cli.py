@@ -118,6 +118,5 @@ def main():
         physics_engine=args.physics_engine,
         blender_dir=args.blender_dir
     )
-    print(settings)
 
     convert(settings, srcdir, src, dst)
