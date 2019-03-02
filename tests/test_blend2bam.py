@@ -133,7 +133,7 @@ def test_cli_physics_builtin():
     shutil.rmtree(DSTDIR, ignore_errors=True)
     args = [
         'python',
-        os.path.join(SRCDIR, 'test.blend'),
+        os.path.join(SRCDIR, 'physics.blend'),
         os.path.join(DSTDIR, 'output.bam'),
         '--physics-engine', 'builtin'
     ]
@@ -147,7 +147,7 @@ def test_cli_physics_bullet():
     shutil.rmtree(DSTDIR, ignore_errors=True)
     args = [
         'python',
-        os.path.join(SRCDIR, 'test.blend'),
+        os.path.join(SRCDIR, 'physics.blend'),
         os.path.join(DSTDIR, 'output.bam'),
         '--physics-engine', 'bullet'
     ]
