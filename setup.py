@@ -8,7 +8,7 @@ def readme():
 
 setup(
     name='panda3d-blend2bam',
-    version='0.4',
+    version='0.5',
     description='A tool to convert Blender blend files to Panda3D BAM files',
     long_description=readme(),
     long_description_content_type='text/markdown',
