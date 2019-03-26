@@ -111,7 +111,7 @@ def main():
 
     src = [os.path.abspath(i) for i in args.src]
     srcdir = args.srcdir if args.srcdir is not None else os.path.commonpath(src)
-    dst = os.path.abspath(args.dst)
+    dst = os.path.abspath(args.dst) + os.sep
 
     settings = Settings(
         material_mode=args.material_mode,
