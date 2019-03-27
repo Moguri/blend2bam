@@ -29,6 +29,9 @@ def convert(settings, srcdir, src, dst):
     src_is_dir = os.path.isdir(src[0])
     dst_is_dir = not os.path.splitext(dst)[1]
 
+    if dst_is_dir and not dst.endswith(os.sep):
+        dst = dst + os.sep
+
     files_to_convert = []
     if src_is_dir:
         srcdir = src[0]
@@ -41,7 +44,7 @@ def convert(settings, srcdir, src, dst):
     else:
         files_to_convert = [os.path.abspath(i) for i in src]
 
-    is_batch = len(files_to_convert) > 1
+    is_batch = len(files_to_convert) > 1 or dst_is_dir
 
     if is_batch and not dst_is_dir:
         print('Destination must be a directory if the source is a directory or multiple files')
@@ -110,8 +113,11 @@ def main():
     args = parser.parse_args()
 
     src = [os.path.abspath(i) for i in args.src]
-    srcdir = args.srcdir if args.srcdir is not None else os.path.commonpath(src)
-    dst = os.path.abspath(args.dst) + os.sep
+    if args.srcdir:
+        srcdir = args.srcdir
+    else:
+        srcdir = os.path.dirname(src[0]) if len(src) == 1 else os.path.commonpath(src)
+    dst = os.path.abspath(args.dst)
 
     settings = Settings(
         material_mode=args.material_mode,
