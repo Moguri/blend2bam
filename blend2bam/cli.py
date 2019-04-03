@@ -110,6 +110,12 @@ def main():
         help='directory that contains the blender binary'
     )
 
+    parser.add_argument(
+        '--append-ext',
+        action='store_true',
+        help='append extension on the destination instead of replacing it (batch mode only)'
+    )
+
     args = parser.parse_args()
 
     src = [os.path.abspath(i) for i in args.src]
@@ -122,7 +128,8 @@ def main():
     settings = Settings(
         material_mode=args.material_mode,
         physics_engine=args.physics_engine,
-        blender_dir=args.blender_dir
+        blender_dir=args.blender_dir,
+        append_ext=args.append_ext,
     )
 
     convert(settings, srcdir, src, dst)

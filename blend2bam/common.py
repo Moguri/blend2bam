@@ -4,11 +4,13 @@ Settings = namedtuple('Settings', (
     'material_mode',
     'physics_engine',
     'blender_dir',
+    'append_ext',
 ))
 Settings.__new__.__defaults__ = (
     'legacy', # material_mode
     'builtin', # physics engine
     '', # blender_dir
+    False, # append_ext
 )
 
 class ConverterBase:

@@ -24,6 +24,11 @@ class ConverterGltf2Bam(ConverterBase):
     def convert_batch(self, srcroot, dstdir, files):
         for gltffile in files:
             src = gltffile
-            dst = src.replace(srcroot, dstdir).replace('.gltf', '.bam')
+            dst = src.replace(srcroot, dstdir)
+
+            if self.settings.append_ext:
+                dst = dst.replace('.gltf', '.blend.bam')
+            else:
+                dst = dst.replace('.gltf', '.bam')
 
             self.convert_single(src, dst)
