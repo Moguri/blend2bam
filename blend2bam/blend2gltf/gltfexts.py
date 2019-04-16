@@ -81,13 +81,3 @@ class ExtMaterialsLegacy:
         for bl_mat, gl_mat in material_pairs:
             gl_mat['extensions'] = gl_mat.get('extensions', {})
             gl_mat['extensions']['BP_materials_legacy'] = self.export_material(state, bl_mat)
-
-
-class ExtZup:
-    ext_meta = {
-        'name': 'BP_zup',
-        'isDraft': True,
-    }
-
-    def export(self, state):
-        state['extensions_used'].append('BP_zup')

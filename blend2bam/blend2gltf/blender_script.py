@@ -14,7 +14,7 @@ def export_gltf(settings, src, dst):
     sys.path.insert(0, os.path.join(scriptdir))
     if 'blendergltf' in sys.modules:
         del sys.modules['blendergltf']
-    from gltfexts import ExtMaterialsLegacy, ExtZup #pylint: disable=import-error
+    from gltfexts import ExtMaterialsLegacy #pylint: disable=import-error
     import blendergltf #pylint: disable=import-error
 
     available_extensions = blendergltf.extensions
@@ -26,12 +26,10 @@ def export_gltf(settings, src, dst):
         'extension_exporters': [
             available_extensions.khr_lights.KhrLights(),
             available_extensions.blender_physics.BlenderPhysics(),
-            ExtZup(),
         ],
         'gltf_output_dir': dstdir,
         'images_data_storage': 'REFERENCE',
         'nodes_export_hidden': True,
-        'nodes_global_matrix_apply': False,
         'meshes_interleave_vertex_data': False,
     }
 
