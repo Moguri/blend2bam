@@ -5,12 +5,14 @@ Settings = namedtuple('Settings', (
     'physics_engine',
     'blender_dir',
     'append_ext',
+    'pipeline',
 ))
 Settings.__new__.__defaults__ = (
     'legacy', # material_mode
     'builtin', # physics engine
     '', # blender_dir
     False, # append_ext
+    'gltf', # pipeline
 )
 
 class ConverterBase:

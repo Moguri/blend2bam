@@ -109,3 +109,17 @@ def test_cli_physics_bullet():
     assert os.path.exists(DSTDIR)
     assert not os.path.exists(os.path.join(DSTDIR, 'test.gltf'))
     assert os.path.exists(os.path.join(DSTDIR, 'output.bam'))
+
+def test_cli_pipeline_egg():
+    shutil.rmtree(DSTDIR, ignore_errors=True)
+    args = [
+        'python',
+        os.path.join(SRCDIR, 'physics.blend'),
+        os.path.join(DSTDIR, 'output.bam'),
+        '--pipeline', 'egg'
+    ]
+    sys.argv = args
+    blend2bam.cli.main()
+    assert os.path.exists(DSTDIR)
+    assert not os.path.exists(os.path.join(DSTDIR, 'test.egg'))
+    assert os.path.exists(os.path.join(DSTDIR, 'output.bam'))

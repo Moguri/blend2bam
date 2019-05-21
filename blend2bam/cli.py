@@ -4,14 +4,24 @@ import sys
 import tempfile
 
 
-from .blend2gltf import ConverterBlend2Gltf
-from .gltf2bam import ConverterGltf2Bam
 from .common import Settings
 
 
 def convert(settings, srcdir, src, dst):
-    blend2gltf = ConverterBlend2Gltf(settings)
-    gltf2bam = ConverterGltf2Bam(settings)
+    if settings.pipeline == 'gltf':
+        from .blend2gltf import ConverterBlend2Gltf
+        from .gltf2bam import ConverterGltf2Bam
+        src2tmp = ConverterBlend2Gltf(settings)
+        tmp2dst = ConverterGltf2Bam(settings)
+        tmpext = '.gltf'
+    elif settings.pipeline == 'egg':
+        from .blend2egg import ConverterBlend2Egg
+        from .egg2bam import ConverterEgg2Bam
+        src2tmp = ConverterBlend2Egg(settings)
+        tmp2dst = ConverterEgg2Bam(settings)
+        tmpext = '.egg'
+    else:
+        raise RuntimeError('Unknown pipeline: {}'.format(settings.pipeline))
 
     for src_element in src:
         if not os.path.exists(src_element):
@@ -51,9 +61,9 @@ def convert(settings, srcdir, src, dst):
 
     if is_batch:
         # Batch conversion
-        blend2gltf.convert_batch(srcdir, dst, files_to_convert)
-        tmpfiles = [i.replace(srcdir, dst).replace('.blend', '.gltf') for i in files_to_convert]
-        gltf2bam.convert_batch(dst, dst, tmpfiles)
+        src2tmp.convert_batch(srcdir, dst, files_to_convert)
+        tmpfiles = [i.replace(srcdir, dst).replace('.blend', tmpext) for i in files_to_convert]
+        tmp2dst.convert_batch(dst, dst, tmpfiles)
         _ = [os.remove(i) for i in tmpfiles]
     else:
         # Single file conversion
@@ -65,8 +75,8 @@ def convert(settings, srcdir, src, dst):
         tmpfile = tempfile.NamedTemporaryFile(delete=False)
         tmpfile.close()
         try:
-            blend2gltf.convert_single(srcfile, tmpfile.name)
-            gltf2bam.convert_single(tmpfile.name, dst)
+            src2tmp.convert_single(srcfile, tmpfile.name)
+            tmp2dst.convert_single(tmpfile.name, dst)
         finally:
             os.remove(tmpfile.name)
 
@@ -116,6 +126,16 @@ def main():
         help='append extension on the destination instead of replacing it (batch mode only)'
     )
 
+    parser.add_argument(
+        '--pipeline',
+        choices=[
+            'gltf',
+            'egg',
+        ],
+        default='gltf',
+        help='the backend pipeline used to convert files'
+    )
+
     args = parser.parse_args()
 
     src = [os.path.abspath(i) for i in args.src]
@@ -130,6 +150,7 @@ def main():
         physics_engine=args.physics_engine,
         blender_dir=args.blender_dir,
         append_ext=args.append_ext,
+        pipeline=args.pipeline,
     )
 
     convert(settings, srcdir, src, dst)

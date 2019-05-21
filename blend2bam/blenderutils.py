@@ -4,7 +4,7 @@ import subprocess
 
 def run_blender(args, blenderdir=''):
     os.path.join(blenderdir, 'blender')
-    subprocess.check_call(['blender', '--background'] + args, stdout=subprocess.DEVNULL)
+    subprocess.check_call(['blender', '--background'] + args, stdout=None)#subprocess.DEVNULL)
 
 
 def run_blender_script(script, args, blenderdir=''):
