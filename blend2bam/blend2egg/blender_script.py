@@ -13,7 +13,8 @@ def export_egg(_, src, dst):
     sys.path.insert(0, os.path.join(scriptdir, 'yabee'))
     sys.path.insert(0, os.path.join(scriptdir))
     import yabee #pylint: disable=import-error
-    yabee.register()
+    if not hasattr(bpy.context.scene, 'yabee_settings'):
+        yabee.register()
 
     yabee_settings = bpy.context.scene.yabee_settings
     yabee_settings.opt_copy_tex_files = True
