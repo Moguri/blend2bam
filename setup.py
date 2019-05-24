@@ -5,10 +5,13 @@ def readme():
     with open('README.md') as readme_file:
         return readme_file.read()
 
+__version__ = ''
+#pylint: disable=exec-used
+exec(open('blend2bam/version.py').read())
 
 setup(
     name='panda3d-blend2bam',
-    version='0.6',
+    version=__version__,
     description='A tool to convert Blender blend files to Panda3D BAM files',
     long_description=readme(),
     long_description_content_type='text/markdown',

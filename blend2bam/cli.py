@@ -5,6 +5,7 @@ import tempfile
 
 
 from .common import Settings
+from .version import __version__
 
 
 def convert(settings, srcdir, src, dst):
@@ -83,6 +84,12 @@ def convert(settings, srcdir, src, dst):
 def main():
     parser = argparse.ArgumentParser(
         description='CLI tool to convert Blender blend files to Panda3D BAM files'
+    )
+
+    parser.add_argument(
+        '--version',
+        action='version',
+        version='%(prog)s {version}'.format(version=__version__),
     )
 
     parser.add_argument('src', nargs='+', type=str, help='source path')
