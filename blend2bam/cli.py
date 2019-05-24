@@ -62,10 +62,18 @@ def convert(settings, srcdir, src, dst):
 
     if is_batch:
         # Batch conversion
-        src2tmp.convert_batch(srcdir, dst, files_to_convert)
         tmpfiles = [i.replace(srcdir, dst).replace('.blend', tmpext) for i in files_to_convert]
-        tmp2dst.convert_batch(dst, dst, tmpfiles)
-        _ = [os.remove(i) for i in tmpfiles]
+        try:
+            src2tmp.convert_batch(srcdir, dst, files_to_convert)
+            tmp2dst.convert_batch(dst, dst, tmpfiles)
+        except: #pylint: disable=bare-except
+            print('Failed to convert all files', file=sys.stderr)
+        finally:
+            _ = [
+                os.remove(i)
+                for i in tmpfiles
+                if os.path.exists(i)
+            ]
     else:
         # Single file conversion
         srcfile = files_to_convert[0]
@@ -78,8 +86,11 @@ def convert(settings, srcdir, src, dst):
         try:
             src2tmp.convert_single(srcfile, tmpfile.name)
             tmp2dst.convert_single(tmpfile.name, dst)
+        except: #pylint: disable=bare-except
+            print('Failed to convert all file', file=sys.stderr)
         finally:
-            os.remove(tmpfile.name)
+            if os.path.exists(tmpfile.name):
+                os.remove(tmpfile.name)
 
 def main():
     parser = argparse.ArgumentParser(

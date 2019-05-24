@@ -70,12 +70,18 @@ def main():
     with open(settings_fname) as settings_file:
         settings = json.load(settings_file)
 
-    for blendfile in blendfiles:
-        src = blendfile
-        dst = src.replace(srcroot, dstdir).replace('.blend', '.gltf')
+    try:
+        for blendfile in blendfiles:
+            src = blendfile
+            dst = src.replace(srcroot, dstdir).replace('.blend', '.gltf')
 
-        bpy.ops.wm.open_mainfile(filepath=src)
-        export_gltf(settings, src, dst)
+            bpy.ops.wm.open_mainfile(filepath=src)
+            export_gltf(settings, src, dst)
+    except: #pylint: disable=bare-except
+        import traceback
+        traceback.print_exc(file=sys.stderr)
+        print('Filed to convert {} to gltf'.format(src), file=sys.stderr)
+        sys.exit(1)
 
 
 if __name__ == '__main__':
