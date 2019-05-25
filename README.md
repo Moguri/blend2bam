@@ -18,9 +18,34 @@ pip install panda3d-blend2bam
 
 ## Usage
 
-```bash
-blend2bam input.blend output.bam
 ```
+usage: blend2bam [-h] [--version] [-m {legacy,pbr}]
+                 [--physics-engine {builtin,bullet}] [--srcdir SRCDIR]
+                 [--blender-dir BLENDER_DIR] [--append-ext]
+                 [--pipeline {gltf,egg}]
+                 src [src ...] dst
+
+positional arguments:
+  src                   source path
+  dst                   destination path
+
+optional arguments:
+  -h, --help            show this help message and exit
+  --version             show program's version number and exit
+  -m {legacy,pbr}, --material-mode {legacy,pbr}
+                        control how materials are exported
+  --physics-engine {builtin,bullet}
+                        the physics engine to build collision solids for
+  --srcdir SRCDIR       a common source directory to use when specifying
+                        multiple source files
+  --blender-dir BLENDER_DIR
+                        directory that contains the blender binary
+  --append-ext          append extension on the destination instead of
+                        replacing it (batch mode only)
+  --pipeline {gltf,egg}
+                        the backend pipeline used to convert files
+```
+
 
 ## License
 
