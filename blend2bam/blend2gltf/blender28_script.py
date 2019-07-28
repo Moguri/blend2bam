@@ -18,6 +18,8 @@ def export_gltf(_settings, src, dst):
         export_extras=True,
         export_yup=False,
         export_lights=True,
+        export_force_sampling=True,
+        export_apply=True,
     )
 
 
