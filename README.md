@@ -42,30 +42,33 @@ optional arguments:
                         directory that contains the blender binary
   --append-ext          append extension on the destination instead of
                         replacing it (batch mode only)
-  --pipeline {gltf,egg}
+  --pipeline {gltf,egg,gltf28}
                         the backend pipeline used to convert files
 ```
 
 ## Pipelines
 
-`blend2bam` has support for multiple backend "pipelines." Currently, `gltf` and `egg` are supported. `gltf` uses [blendergltf](https://github.com/Kupoman/blendergltf) and [panda3d-gltf](https://github.com/Moguri/panda3d-gltf) while `egg` uses [YABEE](https://github.com/09th/YABEE) and `egg2bam` from the Panda3d SDK. The below table hightlights some of the differences.
+`blend2bam` has support for multiple backend "pipelines." Currently, `gltf` and `egg` are supported.
+`gltf` uses [blendergltf](https://github.com/Kupoman/blendergltf) and [panda3d-gltf](https://github.com/Moguri/panda3d-gltf) while `egg` uses [YABEE](https://github.com/09th/YABEE) and `egg2bam` from the Panda3d SDK.
+For Blender 2.80+, only glTF is supported via the the `gltf28` pipeline which uses the glTF exporter built into Blender 2.80+.
+The below table hightlights some of the differences.
 
-|Feature|glTF|EGG|
-|---|:---:|:---:|
-|Static Meshes|:heavy_check_mark:|:heavy_check_mark:|
-|Textures|:heavy_check_mark:|:heavy_check_mark:|
-|Multiple Diffuse Textures|:x:|:heavy_check_mark:|
-|Legacy Materials|:heavy_check_mark:|:heavy_check_mark:|
-|PBR Materials|:heavy_check_mark:|:x:|
-|Lights|:heavy_check_mark:|:x:|
-|Skinned Meshes|:heavy_check_mark:|:heavy_check_mark:|
-|Skeletal Animations|:heavy_check_mark:|:heavy_check_mark:|
-|Shape Keys|:x:|:heavy_check_mark:|
-|Shape Key Animations|:x:|:heavy_check_mark:|
-|CollisionSolids|:heavy_check_mark:|:heavy_check_mark:|
-|Bullet Shapes|:heavy_check_mark:|:x:|
-|Tags from Game Properties|:heavy_check_mark:|:heavy_check_mark:|
-|Tags from Custom Properties|:heavy_check_mark:|:x:|
+|Feature|glTF|EGG|glTF28|
+|---|:---:|:---:|:---:|
+|Static Meshes|:heavy_check_mark:|:heavy_check_mark:|:heavy_check_mark:|
+|Textures|:heavy_check_mark:|:heavy_check_mark:|:heavy_check_mark:|
+|Multiple Diffuse Textures|:x:|:heavy_check_mark:|:x:|
+|Legacy Materials|:heavy_check_mark:|:heavy_check_mark:|:x:|
+|PBR Materials|:heavy_check_mark:|:x:|:heavy_check_mark:|
+|Lights|:heavy_check_mark:|:x:|:heavy_check_mark:|
+|Skinned Meshes|:heavy_check_mark:|:heavy_check_mark:|:heavy_check_mark:|
+|Skeletal Animations|:heavy_check_mark:|:heavy_check_mark:|:heavy_check_mark:|
+|Shape Keys|:x:|:heavy_check_mark:|:x:|
+|Shape Key Animations|:x:|:heavy_check_mark:|:x:|
+|CollisionSolids|:heavy_check_mark:|:heavy_check_mark:|:x:|
+|Bullet Shapes|:heavy_check_mark:|:x:|:x:|
+|Tags from Game Properties|:heavy_check_mark:|:heavy_check_mark:|:x:|
+|Tags from Custom Properties|:heavy_check_mark:|:x:|:heavy_check_mark:|
 
 
 ## License
