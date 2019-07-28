@@ -96,8 +96,6 @@ def convert(settings, srcdir, src, dst):
         except: #pylint: disable=bare-except
             import traceback
             traceback.print_exc()
-            import shutil
-            shutil.copyfile(tmpfile.name, 'tmp.gltf')
             print('Failed to convert all file', file=sys.stderr)
         finally:
             if os.path.exists(tmpfile.name):
