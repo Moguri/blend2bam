@@ -15,3 +15,9 @@ def run_blender_script(script, args, blenderdir=''):
         ] + args,
         blenderdir=blenderdir
     )
+
+
+def is_blender_28(blenderdir=''):
+    os.path.join(blenderdir, 'blender')
+    output = subprocess.check_output(['blender', '--version'])
+    return output.startswith(b'Blender 2.8')

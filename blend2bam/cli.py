@@ -6,6 +6,7 @@ import tempfile
 
 from .common import Settings
 from .version import __version__
+from . import blenderutils
 
 
 def convert(settings, srcdir, src, dst):
@@ -13,6 +14,12 @@ def convert(settings, srcdir, src, dst):
         from .blend2gltf import ConverterBlend2Gltf
         from .gltf2bam import ConverterGltf2Bam
         src2tmp = ConverterBlend2Gltf(settings)
+        tmp2dst = ConverterGltf2Bam(settings)
+        tmpext = '.gltf'
+    elif settings.pipeline == 'gltf28':
+        from .blend2gltf import ConverterBlend2Gltf28
+        from .gltf2bam import ConverterGltf2Bam
+        src2tmp = ConverterBlend2Gltf28(settings)
         tmp2dst = ConverterGltf2Bam(settings)
         tmpext = '.gltf'
     elif settings.pipeline == 'egg':
@@ -87,6 +94,10 @@ def convert(settings, srcdir, src, dst):
             src2tmp.convert_single(srcfile, tmpfile.name)
             tmp2dst.convert_single(tmpfile.name, dst)
         except: #pylint: disable=bare-except
+            import traceback
+            traceback.print_exc()
+            import shutil
+            shutil.copyfile(tmpfile.name, 'tmp.gltf')
             print('Failed to convert all file', file=sys.stderr)
         finally:
             if os.path.exists(tmpfile.name):
@@ -148,6 +159,7 @@ def main():
         '--pipeline',
         choices=[
             'gltf',
+            'gltf28',
             'egg',
         ],
         default='gltf',
@@ -162,6 +174,14 @@ def main():
     else:
         srcdir = os.path.dirname(src[0]) if len(src) == 1 else os.path.commonpath(src)
     dst = os.path.abspath(args.dst)
+
+    use_gltf28 = blenderutils.is_blender_28(args.blender_dir)
+    if use_gltf28 and args.pipeline != 'gltf28':
+        print('Blender version is 2.8+, forcing gltf28 pipeline')
+        args.pipeline = 'gltf28'
+    elif not use_gltf28 and args.pipeline == 'gltf28':
+        print('Blender version is not 2.8+ but gltf28 pipeline was selected, forcing to gltf')
+        args.pipeline = 'gltf'
 
     settings = Settings(
         material_mode=args.material_mode,

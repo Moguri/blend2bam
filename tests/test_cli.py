@@ -2,8 +2,11 @@ import os
 import shutil
 import sys
 
+import pytest
+
 import blend2bam
 import blend2bam.cli
+from blend2bam import blenderutils
 
 
 TESTDIR = os.path.dirname(os.path.abspath(__file__))
@@ -111,6 +114,8 @@ def test_cli_physics_bullet():
     assert os.path.exists(os.path.join(DSTDIR, 'output.bam'))
 
 def test_cli_pipeline_egg():
+    if blenderutils.is_blender_28():
+        pytest.skip('EGG pipeline not supported with blender 2.8')
     shutil.rmtree(DSTDIR, ignore_errors=True)
     args = [
         'python',

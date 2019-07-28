@@ -1,14 +1,20 @@
 import os
 import shutil
 
+import pytest
+
 import blend2bam
 import blend2bam.blend2egg
 import blend2bam.egg2bam
+from blend2bam import blenderutils
 
 
 TESTDIR = os.path.dirname(os.path.abspath(__file__))
 SRCDIR = os.path.join(TESTDIR, 'assets')
 DSTDIR = os.path.join(TESTDIR, 'export')
+
+if blenderutils.is_blender_28():
+    pytest.skip('EGG pipeline not supported with blender 2.8', allow_module_level=True)
 
 
 def test_blend2egg_single():
