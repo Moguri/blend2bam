@@ -74,6 +74,8 @@ def convert(settings, srcdir, src, dst):
             src2tmp.convert_batch(srcdir, dst, files_to_convert)
             tmp2dst.convert_batch(dst, dst, tmpfiles)
         except: #pylint: disable=bare-except
+            import traceback
+            traceback.print_exc()
             print('Failed to convert all files', file=sys.stderr)
         finally:
             _ = [
