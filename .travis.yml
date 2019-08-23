@@ -16,7 +16,7 @@ deploy:
     skip_existing: true
     on:
       tags: true
-      repo: Moguri/panda3d-blend2bam
+      repo: Moguri/blend2bam
       python: '3.7'
     user: Moguri
     password:
@@ -25,7 +25,7 @@ deploy:
   - provider: releases
     on:
         tags: true
-        repo: Moguri/panda3d-blend2bam
+        repo: Moguri/blend2bam
         python: '3.7'
     skip_cleanup: true
     api_key:
