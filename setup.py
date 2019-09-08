@@ -44,5 +44,8 @@ setup(
         'console_scripts':[
             'blend2bam=blend2bam.cli:main',
         ],
+        'panda3d.loaders': [
+            'blend=blend2bam.loader:BlendLoader',
+        ],
     },
 )
