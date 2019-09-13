@@ -4,6 +4,48 @@ import sys
 
 import bpy #pylint: disable=import-error
 
+def export_physics(gltf_data):
+    gltf_data['extensionsUsed'].append('BLENDER_physics')
+
+
+    objs = [
+        (bpy.data.objects[gltf_node['name']], gltf_node)
+        for gltf_node in gltf_data['nodes']
+    ]
+
+    objs = [
+        i for i in objs
+        if getattr(i[0], 'rigid_body')
+    ]
+
+    for obj, gltf_node in objs:
+        rbody = obj.rigid_body
+
+        bounds = [obj.dimensions[i] / gltf_node.get('scale', (1, 1, 1))[i] for i in range(3)]
+        collision_layers = sum(layer << i for i, layer in enumerate(rbody.collision_collections))
+        physics = {
+            'collisionShapes': [{
+                'shapeType': rbody.collision_shape.upper(),
+                'boundingBox': bounds,
+                'primaryAxis': "Z",
+            }],
+            'mass': rbody.mass,
+            'static': rbody.type == 'PASSIVE',
+            'collisionGroups': collision_layers,
+            'collisionMasks': collision_layers,
+        }
+
+        if rbody.collision_shape in ('CONVEX_HULL', 'MESH'):
+            meshref = [
+                idx
+                for idx, mesh in enumerate(gltf_data['meshes'])
+                if mesh['name'] == obj.data.name
+            ][0]
+            physics['collisionShapes'][0]['mesh'] = meshref
+        if 'extensions' not in gltf_node:
+            gltf_node['extensions'] = {}
+        gltf_node['extensions']['BLENDER_physics'] = physics
+
 
 def export_gltf(_settings, src, dst):
     print('Converting .blend file ({}) to .gltf ({})'.format(src, dst))
@@ -21,6 +63,13 @@ def export_gltf(_settings, src, dst):
         export_force_sampling=True,
         export_apply=True,
     )
+
+    with open(dst) as gltf_file:
+        gltf_data = json.load(gltf_file)
+
+    export_physics(gltf_data)
+    with open(dst, 'w') as gltf_file:
+        json.dump(gltf_data, gltf_file)
 
 
 def main():
