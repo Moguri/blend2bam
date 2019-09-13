@@ -60,7 +60,7 @@ The below table hightlights some of the differences.
 |Multiple Diffuse Textures|:x:|:heavy_check_mark:|:x:|
 |Legacy Materials|:heavy_check_mark:|:heavy_check_mark:|:x:|
 |PBR Materials|:heavy_check_mark:|:x:|:heavy_check_mark:|
-|Lights|:heavy_check_mark:|:x:|:x:|
+|Lights|:heavy_check_mark:|:x:|:heavy_check_mark:|
 |Skinned Meshes|:heavy_check_mark:|:heavy_check_mark:|:heavy_check_mark:|
 |Skeletal Animations|:heavy_check_mark:|:heavy_check_mark:|:heavy_check_mark:|
 |Shape Keys|:x:|:heavy_check_mark:|:x:|
