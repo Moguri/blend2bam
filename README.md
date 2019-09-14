@@ -69,6 +69,7 @@ The below table hightlights some of the differences.
 |Bullet Shapes|:heavy_check_mark:|:x:|:heavy_check_mark:|
 |Tags from Game Properties|:heavy_check_mark:|:heavy_check_mark:|:x:|
 |Tags from Custom Properties|:heavy_check_mark:|:x:|:heavy_check_mark:|
+|Convert Particle Systems to Meshes|:heavy_check_mark:|:x:|:heavy_check_mark:|
 
 
 ## License

@@ -4,9 +4,17 @@ import sys
 
 import bpy #pylint: disable=import-error
 
+def make_particles_real():
+    for obj in bpy.data.objects[:]:
+        if hasattr(obj, 'particle_systems'):
+            print(f'Making particles on {obj.name} real')
+            obj.select = True
+            bpy.ops.object.duplicates_make_real()
 
 def export_gltf(settings, src, dst):
     print('Converting .blend file ({}) to .gltf ({})'.format(src, dst))
+
+    make_particles_real()
 
     # Lazy-load blendergltf
     scriptdir = os.path.dirname(__file__)

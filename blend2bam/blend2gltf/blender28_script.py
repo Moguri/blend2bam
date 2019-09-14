@@ -4,6 +4,13 @@ import sys
 
 import bpy #pylint: disable=import-error
 
+def make_particles_real():
+    for obj in bpy.data.objects[:]:
+        if hasattr(obj, 'particle_systems'):
+            print(f'Making particles on {obj.name} real')
+            obj.select_set(True)
+            bpy.ops.object.duplicates_make_real()
+
 def export_physics(gltf_data):
     gltf_data.setdefault('extensionsUsed', []).append('BLENDER_physics')
 
@@ -53,6 +60,8 @@ def export_gltf(_settings, src, dst):
 
     dstdir = os.path.dirname(dst)
     os.makedirs(dstdir, exist_ok=True)
+
+    make_particles_real()
 
     bpy.ops.export_scene.gltf(
         filepath=dst,
