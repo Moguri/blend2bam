@@ -24,7 +24,7 @@ class ConverterEgg2Bam(ConverterBase):
     def convert_batch(self, srcroot, dstdir, files):
         for outfile in files:
             src = outfile
-            dst = src.replace(srcroot, dstdir)
+            dst = src.replace(str(srcroot), str(dstdir))
 
             if self.settings.append_ext:
                 dst = dst.replace('.egg', '.blend.bam')
