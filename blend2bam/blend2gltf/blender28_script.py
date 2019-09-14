@@ -5,12 +5,13 @@ import sys
 import bpy #pylint: disable=import-error
 
 def export_physics(gltf_data):
-    gltf_data['extensionsUsed'].append('BLENDER_physics')
+    gltf_data.setdefault('extensionsUsed', []).append('BLENDER_physics')
 
 
     objs = [
         (bpy.data.objects[gltf_node['name']], gltf_node)
         for gltf_node in gltf_data['nodes']
+        if gltf_node['name'] in bpy.data.objects
     ]
 
     objs = [
