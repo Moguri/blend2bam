@@ -128,3 +128,15 @@ def test_cli_pipeline_egg():
     assert os.path.exists(DSTDIR)
     assert not os.path.exists(os.path.join(DSTDIR, 'test.egg'))
     assert os.path.exists(os.path.join(DSTDIR, 'output.bam'))
+
+def test_cli_blender_dir():
+    shutil.rmtree(DSTDIR, ignore_errors=True)
+    args = [
+        'python',
+        '--blender-dir', 'tests',
+        os.path.join(SRCDIR, 'test.blend'),
+        os.path.join(DSTDIR, 'output.bam'),
+    ]
+    sys.argv = args
+    with pytest.raises(FileNotFoundError):
+        blend2bam.cli.main()

@@ -3,8 +3,8 @@ import subprocess
 
 
 def run_blender(args, blenderdir=''):
-    os.path.join(blenderdir, 'blender')
-    subprocess.check_call(['blender', '--background'] + args, stdout=None)#subprocess.DEVNULL)
+    binpath = os.path.join(blenderdir, 'blender')
+    subprocess.check_call([binpath, '--background'] + args, stdout=None)#subprocess.DEVNULL)
 
 
 def run_blender_script(script, args, blenderdir=''):
@@ -18,6 +18,6 @@ def run_blender_script(script, args, blenderdir=''):
 
 
 def is_blender_28(blenderdir=''):
-    os.path.join(blenderdir, 'blender')
-    output = subprocess.check_output(['blender', '--version'])
+    binpath = os.path.join(blenderdir, 'blender')
+    output = subprocess.check_output([binpath, '--version'])
     return output.startswith(b'Blender 2.8')
