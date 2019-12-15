@@ -166,6 +166,12 @@ def main():
         help='the backend pipeline used to convert files'
     )
 
+    parser.add_argument(
+        '--no-srgb',
+        action='store_true',
+        help='do not load textures as sRGB textures (only for glTF pipelines)'
+    )
+
     args = parser.parse_args()
 
     src = [os.path.abspath(i) for i in args.src]
@@ -189,6 +195,7 @@ def main():
         blender_dir=args.blender_dir,
         append_ext=args.append_ext,
         pipeline=args.pipeline,
+        no_srgb=args.no_srgb,
     )
 
     convert(settings, srcdir, src, dst)

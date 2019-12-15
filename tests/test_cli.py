@@ -111,3 +111,8 @@ def test_cli_blender_dir(tmpdir):
         run_cli_test(tmpdir, extra_args=[
             '--blender-dir', 'tests',
         ])
+
+def test_cli_no_srgb(tmpdir):
+    run_cli_test(tmpdir, extra_args=[
+        '--no-srgb',
+    ])
