@@ -36,7 +36,7 @@ setup(
         'pytest-runner',
     ],
     tests_require=[
-        'pytest==4.1.*',
+        'pytest',
         'pylint==2.2.*',
         'pytest-pylint',
     ],
