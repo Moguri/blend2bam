@@ -7,6 +7,7 @@ Settings = namedtuple('Settings', (
     'append_ext',
     'pipeline',
     'no_srgb',
+    'textures',
 ))
 Settings.__new__.__defaults__ = (
     'legacy', # material_mode
@@ -15,6 +16,7 @@ Settings.__new__.__defaults__ = (
     False, # append_ext
     'gltf', # pipeline
     'False', # no_srg
+    'ref', # textures
 )
 
 class ConverterBase:

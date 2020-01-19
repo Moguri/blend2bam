@@ -172,6 +172,17 @@ def main():
         help='do not load textures as sRGB textures (only for glTF pipelines)'
     )
 
+    parser.add_argument(
+        '--textures',
+        choices=[
+            'ref',
+            'copy',
+            'embed',
+        ],
+        default='ref',
+        help='how to handle external textures'
+    )
+
     args = parser.parse_args()
 
     src = [os.path.abspath(i) for i in args.src]
@@ -196,6 +207,7 @@ def main():
         append_ext=args.append_ext,
         pipeline=args.pipeline,
         no_srgb=args.no_srgb,
+        textures=args.textures,
     )
 
     convert(settings, srcdir, src, dst)

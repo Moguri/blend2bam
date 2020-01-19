@@ -15,6 +15,14 @@ class ConverterEgg2Bam(ConverterBase):
             '-o', dst,
             '-pd', os.path.dirname(dst),
             '-ps', 'rel',
+        ]
+
+        if self.settings.textures == 'embed':
+            args += ['-rawtex']
+        elif self.settings.textures == 'copy':
+            args += ['-pc {}'.format(os.path.abspath(dst))]
+
+        args += [
             src
         ]
 

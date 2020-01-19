@@ -19,6 +19,7 @@ class ConverterGltf2Bam(ConverterBase):
             physics_engine=self.settings.physics_engine,
             skip_axis_conversion=True,
             no_srgb=self.settings.no_srgb,
+            textures=self.settings.textures,
         )
         gltf.converter.convert(src, dst, settings)
 

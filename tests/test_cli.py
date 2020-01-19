@@ -116,3 +116,18 @@ def test_cli_no_srgb(tmpdir):
     run_cli_test(tmpdir, extra_args=[
         '--no-srgb',
     ])
+
+def test_cli_textures_ref(tmpdir):
+    run_cli_test(tmpdir, extra_args=[
+        '--textures=ref',
+    ])
+
+def test_cli_textures_copy(tmpdir):
+    run_cli_test(tmpdir, extra_args=[
+        '--textures=copy',
+    ])
+
+def test_cli_textures_embed(tmpdir):
+    run_cli_test(tmpdir, extra_args=[
+        '--textures=embed',
+    ])

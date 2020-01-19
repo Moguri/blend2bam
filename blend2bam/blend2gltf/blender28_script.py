@@ -57,7 +57,7 @@ def export_physics(gltf_data):
         gltf_node['extensions']['BLENDER_physics'] = physics
 
 
-def export_gltf(_settings, src, dst):
+def export_gltf(settings, src, dst):
     print('Converting .blend file ({}) to .gltf ({})'.format(src, dst))
 
     dstdir = os.path.dirname(dst)
@@ -67,7 +67,7 @@ def export_gltf(_settings, src, dst):
 
     bpy.ops.export_scene.gltf(
         filepath=dst,
-        export_format='GLTF_EMBEDDED',
+        export_format='GLTF_EMBEDDED' if settings['textures'] == 'embed' else 'GLTF_SEPARATE',
         export_cameras=True,
         export_extras=True,
         export_yup=False,
@@ -81,7 +81,7 @@ def export_gltf(_settings, src, dst):
 
     export_physics(gltf_data)
     with open(dst, 'w') as gltf_file:
-        json.dump(gltf_data, gltf_file)
+        json.dump(gltf_data, gltf_file, indent=4)
 
 
 def main():

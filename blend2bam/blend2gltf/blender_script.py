@@ -38,10 +38,14 @@ def export_gltf(settings, src, dst):
             available_extensions.blender_physics.BlenderPhysics(),
         ],
         'gltf_output_dir': dstdir,
-        'images_data_storage': 'REFERENCE',
         'nodes_export_hidden': True,
         'meshes_interleave_vertex_data': False,
     }
+
+    if settings['textures'] == 'embed':
+        gltf_settings['images_data_storage'] = 'EMBED'
+    elif settings['textures'] == 'ref':
+        gltf_settings['images_data_storage'] = 'REFERENCE'
 
     if settings['material_mode'] == 'legacy':
         gltf_settings['extension_exporters'].append(ExtMaterialsLegacy())
