@@ -18,10 +18,7 @@ class BlendLoader:
     def load_file(path, options, _record=None):
         loader = p3d.Loader.get_global_ptr()
         with tempfile.NamedTemporaryFile(suffix='.bam') as bamfile:
-            try:
-                bamfilepath = p3d.Filename.from_os_specific(bamfile.name)
-                bamfilepath.make_true_case()
-                convert(BlendLoader.global_settings, path.get_dirname(), path, bamfilepath)
-                return loader.load_sync(bamfilepath, options=options)
-            except:
-                raise RuntimeError("Failed to convert blend file")
+            bamfilepath = p3d.Filename.from_os_specific(bamfile.name)
+            bamfilepath.make_true_case()
+            convert(BlendLoader.global_settings, path.get_dirname(), [path], bamfilepath)
+            return loader.load_sync(bamfilepath, options=options)
