@@ -23,6 +23,10 @@ class ConverterGltf2Bam(ConverterBase):
         )
         gltf.converter.convert(src, dst, settings)
 
+        binfname = dst.replace('.bam', '.bin')
+        if os.path.exists(binfname):
+            os.remove(binfname)
+
     def convert_batch(self, srcroot, dstdir, files):
         for gltffile in files:
             src = gltffile
