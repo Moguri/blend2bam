@@ -5,7 +5,10 @@ import sys
 import bpy #pylint: disable=import-error
 
 def make_particles_real():
-    bpy.ops.object.mode_set(mode='OBJECT')
+    try:
+        bpy.ops.object.mode_set(mode='OBJECT')
+    except RuntimeError:
+        pass
 
     for obj in bpy.data.objects[:]:
         if hasattr(obj, 'particle_systems'):
