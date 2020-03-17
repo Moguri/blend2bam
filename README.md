@@ -5,7 +5,8 @@
 
 
 # blend2bam
-`blend2bam` is a CLI tool to convert Blender blend files to Panda3D BAM files
+`blend2bam` is a CLI tool to convert Blender blend files to Panda3D BAM files.
+It also supplies a Python file loader to add "native" blend file support to Panda3D.
 
 
 ## Installation
@@ -17,6 +18,8 @@ pip install panda3d-blend2bam
 ```
 
 ## Usage
+
+### CLI
 
 ```
 usage: blend2bam [-h] [--version] [-m {legacy,pbr}]
@@ -45,6 +48,11 @@ optional arguments:
   --pipeline {gltf,egg,gltf28}
                         the backend pipeline used to convert files
 ```
+
+### Python File Loader
+
+`blend2bam` also supports Panda3D's Python file loader API (requires Panda3D 1.10.4+) to seamlessly adds blend file support to Panda3D's `Loader` classes.
+This *does not* add support to `pview`, which is a C++ application that does not support Python file loaders.
 
 ## Pipelines
 
