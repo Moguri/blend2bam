@@ -32,6 +32,7 @@ setup(
     include_package_data=True,
     install_requires=[
         'panda3d',
+        'panda3d-gltf>=0.6',
     ],
     setup_requires=[
         'pytest-runner',
