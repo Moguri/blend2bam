@@ -107,7 +107,7 @@ def test_cli_pipeline_egg(tmpdir):
     assert not os.path.exists(os.path.join(tmpdir, 'test.egg'))
 
 def test_cli_blender_dir(tmpdir):
-    with pytest.raises(FileNotFoundError):
+    with pytest.raises(SystemExit):
         run_cli_test(tmpdir, extra_args=[
             '--blender-dir', 'tests',
         ])
