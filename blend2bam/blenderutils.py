@@ -17,6 +17,14 @@ def run_blender_script(script, args, blenderdir=''):
     )
 
 
+def blender_exists(blenderdir=''):
+    try:
+        is_blender_28(blenderdir=blenderdir)
+        return True
+    except FileNotFoundError:
+        return False
+
+
 def is_blender_28(blenderdir=''):
     binpath = os.path.join(blenderdir, 'blender')
     output = subprocess.check_output([binpath, '--version'])

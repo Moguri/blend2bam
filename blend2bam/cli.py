@@ -192,6 +192,13 @@ def main():
         srcdir = os.path.dirname(src[0]) if len(src) == 1 else os.path.commonpath(src)
     dst = os.path.abspath(args.dst)
 
+    if not blenderutils.blender_exists(args.blender_dir):
+        print(
+            'Blender not found! Try adding Blender to the system PATH or using '
+            '--blender-dir to point to its location'
+        )
+        sys.exit(1)
+
     use_gltf28 = blenderutils.is_blender_28(args.blender_dir)
     if use_gltf28 and args.pipeline != 'gltf28':
         print('Blender version is 2.8+, forcing gltf28 pipeline')
