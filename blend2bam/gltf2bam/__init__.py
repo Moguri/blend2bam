@@ -2,16 +2,12 @@ import json
 import os
 import sys
 
-import panda3d.core as p3d
+import gltf.converter
 
 from blend2bam.common import ConverterBase
 
 class ConverterGltf2Bam(ConverterBase):
     def convert_single(self, src, dst):
-        scriptdir = os.path.dirname(os.path.abspath(__file__))
-        sys.path.insert(0, os.path.join(scriptdir, 'panda3d-gltf'))
-        import gltf.converter #pylint: disable=import-error
-
         dstdir = os.path.dirname(dst)
         os.makedirs(dstdir, exist_ok=True)
 

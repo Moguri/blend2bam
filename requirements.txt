@@ -1,1 +1,2 @@
 panda3d
+panda3d-gltf
