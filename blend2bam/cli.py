@@ -67,41 +67,39 @@ def convert(settings, srcdir, src, dst):
     if is_batch and not dst_is_dir:
         print('Destination must be a directory if the source is a directory or multiple files')
 
-    if is_batch:
-        # Batch conversion
-        tmpfiles = [i.replace(srcdir, dst).replace('.blend', tmpext) for i in files_to_convert]
-        try:
+    try:
+        if is_batch:
+            # Batch conversion
+            tmpfiles = [
+                i.replace(srcdir, dst).replace('.blend', tmpext)
+                for i in files_to_convert
+            ]
             src2tmp.convert_batch(srcdir, dst, files_to_convert)
             tmp2dst.convert_batch(dst, dst, tmpfiles)
-        except: #pylint: disable=bare-except
-            import traceback
-            traceback.print_exc()
-            print('Failed to convert all files', file=sys.stderr)
-        finally:
-            _ = [
-                os.remove(i)
-                for i in tmpfiles
-                if os.path.exists(i)
-            ]
-    else:
-        # Single file conversion
-        srcfile = files_to_convert[0]
-        if dst_is_dir:
-            # Destination is a directory, add a filename
-            dst = os.path.join(dst, os.path.basename(srcfile.replace('blend', 'bam')))
+        else:
+            # Single file conversion
+            srcfile = files_to_convert[0]
+            if dst_is_dir:
+                # Destination is a directory, add a filename
+                dst = os.path.join(dst, os.path.basename(srcfile.replace('blend', 'bam')))
 
-        tmpfile = tempfile.NamedTemporaryFile(delete=False)
-        tmpfile.close()
-        try:
+            tmpfile = tempfile.NamedTemporaryFile(delete=False)
+            tmpfile.close()
+            tmpfiles = [tmpfile.name]
+
             src2tmp.convert_single(srcfile, tmpfile.name)
             tmp2dst.convert_single(tmpfile.name, dst)
-        except: #pylint: disable=bare-except
-            import traceback
-            traceback.print_exc()
-            print('Failed to convert all file', file=sys.stderr)
-        finally:
-            if os.path.exists(tmpfile.name):
-                os.remove(tmpfile.name)
+    except Exception: #pylint: disable=broad-except
+        import traceback
+        print(traceback.format_exc())
+        print('Failed to convert all files', file=sys.stderr)
+        sys.exit(1)
+    finally:
+        _ = [
+            os.remove(i)
+            for i in tmpfiles
+            if os.path.exists(i)
+        ]
 
 def main():
     parser = argparse.ArgumentParser(
