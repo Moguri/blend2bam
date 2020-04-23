@@ -26,11 +26,12 @@ However, if it's not, the directory containing `blender` can be specified with `
 ### CLI
 
 ```
-usage: blend2bam [-h] [--version] [-m {legacy,pbr}]
-                 [--physics-engine {builtin,bullet}] [--srcdir SRCDIR]
-                 [--blender-dir BLENDER_DIR] [--append-ext]
-                 [--pipeline {gltf,egg}]
+usage: blend2bam [-h] [--version] [-m {legacy,pbr}] [--physics-engine {builtin,bullet}] [--srcdir SRCDIR]
+                 [--blender-dir BLENDER_DIR] [--append-ext] [--pipeline {gltf,egg}]
+                 [--no-srgb] [--textures {ref,copy,embed}]
                  src [src ...] dst
+
+CLI tool to convert Blender blend files to Panda3D BAM files
 
 positional arguments:
   src                   source path
@@ -43,14 +44,16 @@ optional arguments:
                         control how materials are exported
   --physics-engine {builtin,bullet}
                         the physics engine to build collision solids for
-  --srcdir SRCDIR       a common source directory to use when specifying
-                        multiple source files
+  --srcdir SRCDIR       a common source directory to use when specifying multiple source files
   --blender-dir BLENDER_DIR
                         directory that contains the blender binary
-  --append-ext          append extension on the destination instead of
-                        replacing it (batch mode only)
+  --append-ext          append extension on the destination instead of replacing it (batch mode only)
   --pipeline {gltf,egg}
                         the backend pipeline used to convert files
+  --no-srgb             do not load textures as sRGB textures (only for glTF pipelines)
+  --textures {ref,copy,embed}
+                        how to handle external textures
+
 ```
 
 ### Python File Loader
