@@ -32,5 +32,4 @@ def test_load_single(showbase, modelpath):
 def test_load_multiple(showbase, modelpath):
     showbase.loader.load_model([modelpath, modelpath], noCache=True)
     showbase.loader.load_model({modelpath, modelpath}, noCache=True)
-    # doesn't work on Panda3D 1.10.4+
-    # showbase.loader.load_model((modelpath, modelpath))
+    showbase.loader.load_model((modelpath, modelpath), noCache=True)
