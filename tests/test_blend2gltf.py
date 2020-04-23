@@ -1,10 +1,8 @@
 import os.path
-from blend2bam import blenderutils
 from blend2bam.common import Settings
 from blend2bam.cli import convert
 
-USE_GLTF28 = blenderutils.is_blender_28('')
-SETTINGS = Settings(pipeline=('gltf28' if USE_GLTF28 else 'gltf'))
+SETTINGS = Settings()
 
 TESTDIR = os.path.dirname(os.path.abspath(__file__))
 SRCDIR = os.path.join(TESTDIR, 'assets')

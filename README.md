@@ -45,7 +45,7 @@ optional arguments:
                         directory that contains the blender binary
   --append-ext          append extension on the destination instead of
                         replacing it (batch mode only)
-  --pipeline {gltf,egg,gltf28}
+  --pipeline {gltf,egg}
                         the backend pipeline used to convert files
 ```
 
@@ -57,11 +57,11 @@ This *does not* add support to `pview`, which is a C++ application that does not
 ## Pipelines
 
 `blend2bam` has support for multiple backend "pipelines." Currently, `gltf` and `egg` are supported.
-`gltf` uses [blendergltf](https://github.com/Kupoman/blendergltf) and [panda3d-gltf](https://github.com/Moguri/panda3d-gltf) while `egg` uses [YABEE](https://github.com/09th/YABEE) and `egg2bam` from the Panda3d SDK.
-For Blender 2.80+, only glTF is supported via the the `gltf28` pipeline which uses the glTF exporter built into Blender 2.80+.
+For Blender 2.7x, `gltf` uses [blendergltf](https://github.com/Kupoman/blendergltf) and [panda3d-gltf](https://github.com/Moguri/panda3d-gltf) while `egg` uses [YABEE](https://github.com/09th/YABEE) and `egg2bam` from the Panda3d SDK.
+For Blender 2.8+, only `gltf` is supported uses the glTF exporter built into Blender 2.8+ instead of blendergltf.
 The below table hightlights some of the differences.
 
-|Feature|glTF|EGG|glTF28|
+|Feature|glTF (2.7x)|EGG (2.7x)|glTF (2.8+)|
 |---|:---:|:---:|:---:|
 |Static Meshes|:heavy_check_mark:|:heavy_check_mark:|:heavy_check_mark:|
 |Textures|:heavy_check_mark:|:heavy_check_mark:|:heavy_check_mark:|

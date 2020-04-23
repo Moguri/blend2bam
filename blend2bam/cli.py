@@ -11,17 +11,15 @@ from . import blenderutils
 
 def convert(settings, srcdir, src, dst):
     if settings.pipeline == 'gltf':
-        from .blend2gltf import ConverterBlend2Gltf
         from .gltf2bam import ConverterGltf2Bam
-        src2tmp = ConverterBlend2Gltf(settings)
         tmp2dst = ConverterGltf2Bam(settings)
         tmpext = '.gltf'
-    elif settings.pipeline == 'gltf28':
-        from .blend2gltf import ConverterBlend2Gltf28
-        from .gltf2bam import ConverterGltf2Bam
-        src2tmp = ConverterBlend2Gltf28(settings)
-        tmp2dst = ConverterGltf2Bam(settings)
-        tmpext = '.gltf'
+        if blenderutils.is_blender_28(settings.blender_dir):
+            from .blend2gltf import ConverterBlend2Gltf28
+            src2tmp = ConverterBlend2Gltf28(settings)
+        else:
+            from .blend2gltf import ConverterBlend2Gltf
+            src2tmp = ConverterBlend2Gltf(settings)
     elif settings.pipeline == 'egg':
         from .blend2egg import ConverterBlend2Egg
         from .egg2bam import ConverterEgg2Bam
@@ -157,7 +155,6 @@ def main():
         '--pipeline',
         choices=[
             'gltf',
-            'gltf28',
             'egg',
         ],
         default='gltf',
@@ -197,12 +194,8 @@ def main():
         )
         sys.exit(1)
 
-    use_gltf28 = blenderutils.is_blender_28(args.blender_dir)
-    if use_gltf28 and args.pipeline != 'gltf28':
-        print('Blender version is 2.8+, forcing gltf28 pipeline')
-        args.pipeline = 'gltf28'
-    elif not use_gltf28 and args.pipeline == 'gltf28':
-        print('Blender version is not 2.8+ but gltf28 pipeline was selected, forcing to gltf')
+    if blenderutils.is_blender_28(args.blender_dir) and args.pipeline == 'egg':
+        print('EGG is not support for Blender 2.8+, falling back go to gltf pipeline')
         args.pipeline = 'gltf'
 
     settings = Settings(
