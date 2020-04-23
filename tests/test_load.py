@@ -26,7 +26,7 @@ def modelpath():
 
 
 def test_load_single(showbase, modelpath):
-    scene = showbase.loader.load_model(modelpath, noCache=True)
+    showbase.loader.load_model(modelpath, noCache=True)
 
 
 def test_load_multiple(showbase, modelpath):
