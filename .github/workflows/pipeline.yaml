@@ -1,0 +1,49 @@
+name: Pipeline
+on: [push, pull_request]
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        blender: [latest, 2.79]
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        submodules: recursive
+    - name: Set up Python
+      uses: actions/setup-python@v1
+      with:
+        python-version: 3.8
+    - name: Install Blender
+      run: |
+        sudo apt-get install -y libglu1-mesa
+        sudo snap install blender --channel=${{ matrix.blender }}/stable --classic
+        echo "::add-path::/snap/bin"
+    - name: Install Package
+      run: |
+        pip install -e .
+    - name: Run Tests
+      run: |
+        python setup.py test
+  build_publish:
+    needs: tests
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        submodules: recursive
+    - name: Set up Python
+      uses: actions/setup-python@v1
+      with:
+        python-version: 3.8
+    - name: Build package
+      run: |
+        python -m pip install wheel
+        python setup.py bdist_wheel
+    - name: Publish package
+      if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags')
+      uses: pypa/gh-action-pypi-publish@master
+      with:
+        user: __token__
+        password: ${{ secrets.pypi_password }}
