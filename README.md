@@ -80,6 +80,7 @@ The below table hightlights some of the differences.
 |Skeletal Animations|:heavy_check_mark:|:heavy_check_mark:|:heavy_check_mark:|
 |Shape Keys|:x:|:heavy_check_mark:|:heavy_check_mark:|
 |Shape Key Animations|:x:|:heavy_check_mark:|:heavy_check_mark:<sup>1</sup>|
+|Object Animations|:x:|:x:|:x:|
 |CollisionSolids|:heavy_check_mark:|:heavy_check_mark:|:heavy_check_mark:|
 |Bullet Shapes|:heavy_check_mark:|:x:|:heavy_check_mark:|
 |Tags from Game Properties|:heavy_check_mark:|:heavy_check_mark:|:x:|
