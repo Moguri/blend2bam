@@ -39,7 +39,7 @@ def convert_files(convertfn, outputext):
 
 def in_blender_28():
     version = bpy.app.version
-    return version[0] >= 2 and version[1] >= 8
+    return version[0] >= 2 and version[1] >= 80
 
 
 def make_particles_real():
