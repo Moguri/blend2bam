@@ -13,8 +13,11 @@ def make_particles_real():
     for obj in bpy.data.objects[:]:
         if hasattr(obj, 'particle_systems'):
             print(f'Making particles on {obj.name} real')
-            obj.select_set(True)
-            bpy.ops.object.duplicates_make_real()
+            try:
+                obj.select_set(True)
+                bpy.ops.object.duplicates_make_real()
+            except RuntimeError as error:
+                print(f'Failed to make particles real on {obj.name}: {error}')
 
 def export_physics(gltf_data):
     gltf_data.setdefault('extensionsUsed', []).append('BLENDER_physics')
