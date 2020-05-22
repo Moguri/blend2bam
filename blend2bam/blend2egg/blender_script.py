@@ -1,8 +1,10 @@
-import json
 import os
 import sys
 
 import bpy #pylint: disable=import-error
+
+sys.path.append(os.path.join(os.path.dirname(__file__), '..', ))
+import blender_script_common as common #pylint: disable=import-error,wrong-import-position
 
 
 def export_egg(_, src, dst):
@@ -40,32 +42,6 @@ def export_egg(_, src, dst):
         yabee_settings.opt_force_export_vertex_colors,
     )
 
-def main():
-    args = sys.argv[sys.argv.index('--')+1:]
-
-    #print(args)
-    settings_fname, srcroot, dstdir, blendfiles = args[0], args[1], args[2], args[3:]
-
-    print('srcroot:', srcroot)
-    print('Exporting:', blendfiles)
-    print('Export to:', dstdir)
-
-    with open(settings_fname) as settings_file:
-        settings = json.load(settings_file)
-
-    try:
-        for blendfile in blendfiles:
-            src = blendfile
-            dst = src.replace(srcroot, dstdir).replace('.blend', '.egg')
-
-            bpy.ops.wm.open_mainfile(filepath=src)
-            export_egg(settings, src, dst)
-    except: #pylint: disable=bare-except
-        import traceback
-        traceback.print_exc(file=sys.stderr)
-        print('Filed to convert {} to egg'.format(src), file=sys.stderr)
-        sys.exit(1)
-
 
 if __name__ == '__main__':
-    main()
+    common.convert_files(export_egg, 'egg')

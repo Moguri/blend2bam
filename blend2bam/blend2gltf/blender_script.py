@@ -4,22 +4,14 @@ import sys
 
 import bpy #pylint: disable=import-error
 
-def make_particles_real():
-    try:
-        bpy.ops.object.mode_set(mode='OBJECT')
-    except RuntimeError:
-        pass
+sys.path.append(os.path.join(os.path.dirname(__file__), '..', ))
+import blender_script_common as common #pylint: disable=import-error,wrong-import-position
 
-    for obj in bpy.data.objects[:]:
-        if hasattr(obj, 'particle_systems'):
-            print('Making particles on {} real'.format(obj.name))
-            obj.select = True
-            bpy.ops.object.duplicates_make_real()
 
 def export_gltf(settings, src, dst):
     print('Converting .blend file ({}) to .gltf ({})'.format(src, dst))
 
-    make_particles_real()
+    common.make_particles_real()
 
     # Lazy-load blendergltf
     scriptdir = os.path.dirname(__file__)
@@ -74,32 +66,5 @@ def export_gltf(settings, src, dst):
         json.dump(gltfdata, gltffile, sort_keys=True, indent=4)
 
 
-def main():
-    args = sys.argv[sys.argv.index('--')+1:]
-
-    #print(args)
-    settings_fname, srcroot, dstdir, blendfiles = args[0], args[1], args[2], args[3:]
-
-    print('srcroot:', srcroot)
-    print('Exporting:', blendfiles)
-    print('Export to:', dstdir)
-
-    with open(settings_fname) as settings_file:
-        settings = json.load(settings_file)
-
-    try:
-        for blendfile in blendfiles:
-            src = blendfile
-            dst = src.replace(srcroot, dstdir).replace('.blend', '.gltf')
-
-            bpy.ops.wm.open_mainfile(filepath=src)
-            export_gltf(settings, src, dst)
-    except: #pylint: disable=bare-except
-        import traceback
-        traceback.print_exc(file=sys.stderr)
-        print('Filed to convert {} to gltf'.format(src), file=sys.stderr)
-        sys.exit(1)
-
-
 if __name__ == '__main__':
-    main()
+    common.convert_files(export_gltf, 'gltf')
