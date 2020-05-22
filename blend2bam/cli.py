@@ -190,7 +190,8 @@ def main():
     if not blenderutils.blender_exists(args.blender_dir):
         print(
             'Blender not found! Try adding Blender to the system PATH or using '
-            '--blender-dir to point to its location'
+            '--blender-dir to point to its location',
+            file=sys.stderr
         )
         sys.exit(1)
 
