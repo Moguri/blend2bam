@@ -89,7 +89,7 @@ def convert(settings, srcdir, src, dst):
             tmp2dst.convert_single(tmpfile.name, dst)
     except Exception: #pylint: disable=broad-except
         import traceback
-        print(traceback.format_exc())
+        print(traceback.format_exc(), file=sys.stderr)
         print('Failed to convert all files', file=sys.stderr)
         sys.exit(1)
     finally:
