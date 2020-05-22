@@ -10,6 +10,12 @@ def convert_files(convertfn, outputext):
     #print(args)
     settings_fname, srcroot, dstdir, blendfiles = args[0], args[1], args[2], args[3:]
 
+    if not srcroot.endswith(os.sep):
+        srcroot += os.sep
+
+    if not dstdir.endswith(os.sep):
+        dstdir += os.sep
+
     print('srcroot:', srcroot)
     print('Exporting:', blendfiles)
     print('Export to:', dstdir)
