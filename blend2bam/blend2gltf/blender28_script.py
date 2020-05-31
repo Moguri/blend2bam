@@ -52,6 +52,43 @@ def export_physics(gltf_data):
         gltf_node['extensions']['BLENDER_physics'] = physics
 
 
+def add_actions_to_nla():
+    def can_object_use_action(obj, action):
+        for fcurve in action.fcurves:
+            path = fcurve.data_path
+            if not path.startswith('pose'):
+                return obj.animation_data is not None
+
+            if obj.type == 'ARMATURE':
+                path = path.split('["')[-1]
+                path = path.split('"]')[0]
+                if path in [bone.name for bone in obj.data.bones]:
+                    return True
+
+        return False
+
+    armature_objects = [
+        obj
+        for obj in bpy.data.objects
+        if obj.type == 'ARMATURE' and obj.animation_data and not obj.animation_data.nla_tracks
+    ]
+
+    for obj in armature_objects:
+        try:
+            obj.select_set(True)
+            actions = [
+                action
+                for action in bpy.data.actions
+                if can_object_use_action(obj, action)
+            ]
+            for action in actions:
+                tracks = obj.animation_data.nla_tracks
+                track = tracks.new()
+                track.strips.new(action.name, 0, action)
+        except RuntimeError as error:
+            print('Failed to auto-add actions to NLA for {}: {}'.format(obj.name, error), file=sys.stderr)
+
+
 def export_gltf(settings, src, dst):
     print('Converting .blend file ({}) to .gltf ({})'.format(src, dst))
 
@@ -59,6 +96,7 @@ def export_gltf(settings, src, dst):
     os.makedirs(dstdir, exist_ok=True)
 
     common.make_particles_real()
+    add_actions_to_nla()
 
     bpy.ops.export_scene.gltf(
         filepath=dst,
