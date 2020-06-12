@@ -24,13 +24,26 @@ def export_physics(gltf_data):
     ]
 
     for obj, gltf_node in objs:
-        rbody = obj.rigid_body
+        if 'extensions' not in gltf_node:
+            gltf_node['extensions'] = {}
 
+        rbody = obj.rigid_body
         bounds = [obj.dimensions[i] / gltf_node.get('scale', (1, 1, 1))[i] for i in range(3)]
         collision_layers = sum(layer << i for i, layer in enumerate(rbody.collision_collections))
+        shape_type = rbody.collision_shape.upper()
+        if shape_type in ('CONVEX_HULL', 'MESH'):
+            meshref = [
+                idx
+                for idx, mesh in enumerate(gltf_data['meshes'])
+                if mesh['name'] == obj.data.name
+            ][0]
+        else:
+            meshref = None
+
+        # BLENDER_physics
         physics = {
             'collisionShapes': [{
-                'shapeType': rbody.collision_shape.upper(),
+                'shapeType': shape_type,
                 'boundingBox': bounds,
                 'primaryAxis': "Z",
             }],
@@ -39,18 +52,24 @@ def export_physics(gltf_data):
             'collisionGroups': collision_layers,
             'collisionMasks': collision_layers,
         }
-
-        if rbody.collision_shape in ('CONVEX_HULL', 'MESH'):
-            meshref = [
-                idx
-                for idx, mesh in enumerate(gltf_data['meshes'])
-                if mesh['name'] == obj.data.name
-            ][0]
+        if meshref is not None:
             physics['collisionShapes'][0]['mesh'] = meshref
-        if 'extensions' not in gltf_node:
-            gltf_node['extensions'] = {}
         gltf_node['extensions']['BLENDER_physics'] = physics
 
+        # PANDA3D_physics_collision_shapes
+        collision_shapes = {
+            'shapes': [{
+                'type': shape_type,
+                'boundingBox': bounds,
+                'primaryAxis': "Z",
+            }],
+            'groups': collision_layers,
+            'masks': collision_layers,
+            'intangible': rbody.type == 'PASSIVE',
+        }
+        if meshref is not None:
+            collision_shapes['shapes'][0]['mesh'] = meshref
+        gltf_node['extensions']['PANDA3D_physics_collision_shapes'] = collision_shapes
 
 def add_actions_to_nla():
     def can_object_use_action(obj, action):
