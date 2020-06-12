@@ -89,12 +89,12 @@ def test_cli_many_to_dir(tmpdir):
     assert os.path.exists(os.path.join(tmpdir, 'test2.bam'))
 
 def test_cli_physics_builtin(tmpdir):
-    run_cli_test(tmpdir, extra_args=[
+    run_cli_test(tmpdir, src=os.path.join(SRCDIR, 'physics.blend'), extra_args=[
         '--physics-engine', 'builtin'
     ])
 
 def test_cli_physics_bullet(tmpdir):
-    run_cli_test(tmpdir, extra_args=[
+    run_cli_test(tmpdir, src=os.path.join(SRCDIR, 'physics.blend'), extra_args=[
         '--physics-engine', 'bullet'
     ])
 
