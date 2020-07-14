@@ -126,6 +126,7 @@ def export_gltf(settings, src, dst):
         export_lights=True,
         export_force_sampling=True,
         export_apply=True,
+        export_tangents=True,
     )
 
     with open(dst) as gltf_file:
