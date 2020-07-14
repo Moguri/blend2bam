@@ -49,7 +49,7 @@ def make_particles_real():
         pass
 
     for obj in bpy.data.objects[:]:
-        if hasattr(obj, 'particle_systems'):
+        if hasattr(obj, 'particle_systems') and obj.particle_systems:
             print('Making particles on {} real'.format(obj.name))
             try:
                 if in_blender_28():
