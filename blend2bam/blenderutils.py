@@ -7,7 +7,7 @@ def run_blender(args, blenderdir=''):
         binpath = os.path.join(blenderdir, 'blender')
         subprocess.check_call([binpath, '--background'] + args, stdout=None)#subprocess.DEVNULL)
     elif blenderdir == '' and not blender_exists(blenderdir): # Attempt to find Blender on Steam
-        blenderdir = 'C:\Program Files (x86)\Steam\steamapps\common\Blender'
+        blenderdir = 'C:\\Program Files (x86)\\Steam\\steamapps\\common\\Blender'
         if blender_exists(blenderdir): # Blender exists on Steam! Use that path
             binpath = os.path.join(blenderdir, 'blender')
             subprocess.check_call([binpath, '--background'] + args, stdout=None)#subprocess.DEVNULL)
