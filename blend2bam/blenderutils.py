@@ -12,7 +12,7 @@ def run_blender(args, blenderdir=''):
             binpath = os.path.join(blenderdir, 'blender')
             subprocess.check_call([binpath, '--background'] + args, stdout=None)#subprocess.DEVNULL)
         else: # Couldn't find Blender on Steam
-            print('blend2bam couldn\'t find Blender on PATH or Steam. If you are using Steam, you may have installed to a directory different from the defaults\nIf you are using Blender Launcher, use --blender-path <path to blender>.')            
+            print('blend2bam couldn\'t find Blender on PATH or Steam. If you are using Steam, you may have installed to a directory different from the defaults\nIf you are using Blender Launcher, use --blender-path <path to blender>.')
 
 def run_blender_script(script, args, blenderdir=''):
     run_blender(
