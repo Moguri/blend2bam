@@ -1,4 +1,5 @@
 import os
+import platform
 import subprocess
 
 
@@ -29,3 +30,32 @@ def is_blender_28(blenderdir=''):
     binpath = os.path.join(blenderdir, 'blender')
     output = subprocess.check_output([binpath, '--version'])
     return output.startswith(b'Blender 2.8')
+
+def locate_blenderdir():
+    if platform.system() == 'Windows':
+        # pylint: disable=import-error
+        import winreg
+
+        # See if the blend extension is registered
+        try:
+            regpath = r'SOFTWARE\Classes\blendfile\shell\open\command'
+            with winreg.OpenKey(winreg.HKEY_LOCAL_MACHINE, regpath) as regkey:
+                command, _ = winreg.QueryValueEx(regkey, '')
+            cmddir = os.path.dirname(command.replace('"', '').replace(' %1', ''))
+            return cmddir
+        except OSError:
+            pass
+
+        # See if there is a Steam version installed
+        try:
+            regpath = r'SOFTWARE\Valve\Steam'
+            with winreg.OpenKey(winreg.HKEY_LOCAL_MACHINE, regpath) as regkey:
+                steamloc, _ = winreg.QueryValueEx(regkey, 'InstallPath')
+            steampath = os.path.join(steamloc, 'steamapps', 'common', 'Blender')
+            if os.path.exists(steampath):
+                return steampath
+        except OSError:
+            pass
+
+    # Couldn't find anything better
+    return ''

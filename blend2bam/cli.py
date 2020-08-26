@@ -187,6 +187,11 @@ def main():
         srcdir = os.path.dirname(src[0]) if len(src) == 1 else os.path.commonpath(src)
     dst = os.path.abspath(args.dst)
 
+    if not args.blender_dir and not blenderutils.blender_exists():
+        args.blender_dir = blenderutils.locate_blenderdir()
+        if args.blender_dir:
+            print('Auto-detected Blender installed at {}'.format(args.blender_dir))
+
     if not blenderutils.blender_exists(args.blender_dir):
         print(
             'Blender not found! Try adding Blender to the system PATH or using '
