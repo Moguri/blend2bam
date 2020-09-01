@@ -180,12 +180,12 @@ def main():
 
     args = parser.parse_args()
 
-    src = [os.path.abspath(i) for i in args.src]
+    src = [os.path.abspath(i.strip('"')) for i in args.src]
     if args.srcdir:
-        srcdir = args.srcdir
+        srcdir = args.srcdir.strip('"')
     else:
         srcdir = os.path.dirname(src[0]) if len(src) == 1 else os.path.commonpath(src)
-    dst = os.path.abspath(args.dst)
+    dst = os.path.abspath(args.dst.strip('"'))
 
     if not args.blender_dir and not blenderutils.blender_exists():
         args.blender_dir = blenderutils.locate_blenderdir()
