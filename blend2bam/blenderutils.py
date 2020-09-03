@@ -29,7 +29,8 @@ def blender_exists(blenderdir=''):
 def is_blender_28(blenderdir=''):
     binpath = os.path.join(blenderdir, 'blender')
     output = subprocess.check_output([binpath, '--version'])
-    return output.startswith(b'Blender 2.8')
+    minor_version = int(output.decode('utf8').split()[1].split('.')[1])
+    return minor_version >= 80
 
 def locate_blenderdir():
     if platform.system() == 'Windows':
