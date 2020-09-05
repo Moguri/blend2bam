@@ -6,7 +6,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        blender: [latest, 2.79]
+        blender: [latest, 2.83lts, 2.79]
     steps:
     - uses: actions/checkout@v2
       with:
