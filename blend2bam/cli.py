@@ -180,9 +180,15 @@ def main():
 
     args = parser.parse_args()
 
-    src = [os.path.abspath(i.strip('"')) for i in args.src]
     if args.srcdir:
-        srcdir = args.srcdir.strip('"')
+        args.srcdir = args.srcdir.strip('"')
+    if args.blender_dir:
+        args.blender_dir = args.blender_dir.strip('"')
+
+    src = [os.path.abspath(i.strip('"')) for i in args.src]
+
+    if args.srcdir:
+        srcdir = args.srcdir
     else:
         srcdir = os.path.dirname(src[0]) if len(src) == 1 else os.path.commonpath(src)
     dst = os.path.abspath(args.dst.strip('"'))
