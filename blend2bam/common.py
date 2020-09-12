@@ -10,7 +10,7 @@ Settings = namedtuple('Settings', (
     'textures',
 ))
 Settings.__new__.__defaults__ = (
-    'legacy', # material_mode
+    'pbr', # material_mode
     'builtin', # physics engine
     '', # blender_dir
     False, # append_ext

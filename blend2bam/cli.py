@@ -119,7 +119,7 @@ def main():
             'legacy',
             'pbr',
         ],
-        default='legacy',
+        default='pbr',
         help='control how materials are exported'
     )
 
