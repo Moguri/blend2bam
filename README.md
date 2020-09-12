@@ -88,6 +88,7 @@ The below table hightlights some of the differences.
 |Convert Particle Systems to Meshes|:heavy_check_mark:|:x:|:heavy_check_mark:|
 
 <sup>1</sup> Shape key animations require Panda3D 1.10.6.
+
 <sup>2</sup> Only supports diffuse color (factor and map pulled from base color) and normal maps.
 Requires `panda3d-gltf` >= 0.9.
 
