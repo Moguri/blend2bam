@@ -5,19 +5,32 @@ import sys
 import gltf.converter
 
 from blend2bam.common import ConverterBase
+from blend2bam import blenderutils
 
 class ConverterGltf2Bam(ConverterBase):
+    def __init__(self, settings=None):
+        super().__init__(settings)
+
+        gltf_settings = {
+            'physics_engine': self.settings.physics_engine,
+            'skip_axis_conversion': True,
+            'no_srgb': self.settings.no_srgb,
+            'textures': self.settings.textures,
+        }
+
+        gltf2bam_version = [int(i) for i in gltf.__version__.split('.')]
+        if gltf2bam_version[1] >= 9:
+            gltf_settings['legacy_materials'] = (
+                blenderutils.is_blender_28()
+                and self.settings.material_mode == 'legacy'
+            )
+        self.gltf_settings = gltf.GltfSettings(**gltf_settings)
+
     def convert_single(self, src, dst):
         dstdir = os.path.dirname(dst)
         os.makedirs(dstdir, exist_ok=True)
 
-        settings = gltf.GltfSettings(
-            physics_engine=self.settings.physics_engine,
-            skip_axis_conversion=True,
-            no_srgb=self.settings.no_srgb,
-            textures=self.settings.textures,
-        )
-        gltf.converter.convert(src, dst, settings)
+        gltf.converter.convert(src, dst, self.gltf_settings)
 
         binfname = dst.replace('.bam', '.bin')
         if os.path.exists(binfname):

@@ -131,3 +131,9 @@ def test_cli_textures_embed(tmpdir):
     run_cli_test(tmpdir, extra_args=[
         '--textures=embed',
     ])
+
+@pytest.mark.parametrize('mode', ['legacy', 'pbr'])
+def test_cli_material_mode(tmpdir, mode):
+    run_cli_test(tmpdir, extra_args=[
+        f'--material-mode={mode}'
+    ])

@@ -73,7 +73,7 @@ The below table hightlights some of the differences.
 |Static Meshes|:heavy_check_mark:|:heavy_check_mark:|:heavy_check_mark:|
 |Textures|:heavy_check_mark:|:heavy_check_mark:|:heavy_check_mark:|
 |Multiple Diffuse Textures|:x:|:heavy_check_mark:|:x:|
-|Legacy Materials|:heavy_check_mark:|:heavy_check_mark:|:x:|
+|Legacy Materials|:heavy_check_mark:|:heavy_check_mark:|:heavy_check_mark:<sup>2</sup>|
 |PBR Materials|:heavy_check_mark:|:x:|:heavy_check_mark:|
 |Lights|:heavy_check_mark:|:x:|:heavy_check_mark:|
 |Skinned Meshes|:heavy_check_mark:|:heavy_check_mark:|:heavy_check_mark:|
@@ -88,6 +88,8 @@ The below table hightlights some of the differences.
 |Convert Particle Systems to Meshes|:heavy_check_mark:|:x:|:heavy_check_mark:|
 
 <sup>1</sup> Shape key animations require Panda3D 1.10.6.
+<sup>2</sup> Only supports diffuse color (factor and map pulled from base color) and normal maps.
+Requires `panda3d-gltf` >= 0.9.
 
 ## License
 
