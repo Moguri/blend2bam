@@ -117,19 +117,10 @@ def test_cli_no_srgb(tmpdir):
         '--no-srgb',
     ])
 
-def test_cli_textures_ref(tmpdir):
+@pytest.mark.parametrize('mode', ['ref', 'copy', 'embed'])
+def test_cli_textures_ref(tmpdir, mode):
     run_cli_test(tmpdir, extra_args=[
-        '--textures=ref',
-    ])
-
-def test_cli_textures_copy(tmpdir):
-    run_cli_test(tmpdir, extra_args=[
-        '--textures=copy',
-    ])
-
-def test_cli_textures_embed(tmpdir):
-    run_cli_test(tmpdir, extra_args=[
-        '--textures=embed',
+        f'--textures={mode}',
     ])
 
 @pytest.mark.parametrize('mode', ['legacy', 'pbr'])
