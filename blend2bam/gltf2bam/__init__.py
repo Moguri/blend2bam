@@ -18,12 +18,13 @@ class ConverterGltf2Bam(ConverterBase):
             'textures': self.settings.textures,
         }
 
-        gltf2bam_version = [int(i) for i in gltf.__version__.split('.')]
-        if gltf2bam_version[1] >= 9:
-            gltf_settings['legacy_materials'] = (
-                blenderutils.is_blender_28()
-                and self.settings.material_mode == 'legacy'
-            )
+        if blenderutils.is_blender_28() and self.settings.material_mode == 'legacy':
+            gltf2bam_version = [int(i) for i in gltf.__version__.split('.')]
+            if gltf2bam_version[0] == 0 and gltf2bam_version[1] < 9:
+                raise RuntimeError(
+                    'panda3d-gltf >= 0.9 is required to use legacy material-mode'
+                    ' with Blender 2.80+'
+                )
         self.gltf_settings = gltf.GltfSettings(**gltf_settings)
 
     def convert_single(self, src, dst):
