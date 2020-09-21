@@ -1,6 +1,7 @@
 import os
 import platform
 import subprocess
+import sys
 
 
 def run_blender(args, blenderdir=''):
@@ -28,6 +29,8 @@ def blender_exists(blenderdir=''):
 
 def is_blender_28(blenderdir=''):
     binpath = os.path.join(blenderdir, 'blender')
+    if sys.platform == 'win32':
+        binpath += '.exe'
     output = subprocess.check_output([binpath, '--version'])
     minor_version = int(output.decode('utf8').split()[1].split('.')[1])
     return minor_version >= 80
