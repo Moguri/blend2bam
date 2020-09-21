@@ -20,6 +20,5 @@ class BlendLoader:
         with tempfile.NamedTemporaryFile(suffix='.bam') as bamfile:
             bamfilepath = p3d.Filename.from_os_specific(bamfile.name)
             bamfilepath.make_true_case()
-            bamfilepath = bamfilepath.to_os_specific()
-            convert(BlendLoader.global_settings, path.get_dirname(), [path], bamfilepath)
+            convert(BlendLoader.global_settings, path.get_dirname(), [path], bamfilepath.to_os_specific())
             return loader.load_sync(bamfilepath, options=options)
