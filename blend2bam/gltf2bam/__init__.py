@@ -18,8 +18,8 @@ class ConverterGltf2Bam(ConverterBase):
             'textures': self.settings.textures,
         }
 
-        if blenderutils.is_blender_28(self.settings.blender_dir) and \
-           self.settings.material_mode == 'legacy':
+        if self.settings.material_mode == 'legacy' and \
+           blenderutils.is_blender_28(self.settings.blender_dir):
             gltf2bam_version = [int(i) for i in gltf.__version__.split('.')]
             if gltf2bam_version[0] == 0 and gltf2bam_version[1] < 9:
                 raise RuntimeError(
