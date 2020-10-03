@@ -107,6 +107,27 @@ def add_actions_to_nla():
         except RuntimeError as error:
             print('Failed to auto-add actions to NLA for {}: {}'.format(obj.name, error), file=sys.stderr)
 
+def prepare_meshes():
+    def is_armature_mesh(obj):
+        for modifier in obj.modifiers:
+            if modifier.type == 'ARMATURE':
+                return True
+        return False
+
+    armature_meshes = [
+        obj
+        for obj in bpy.data.objects
+        if is_armature_mesh(obj)
+    ]
+
+    bpy.ops.object.select_all(action='DESELECT')
+    for obj in armature_meshes:
+        bpy.context.view_layer.objects.active = obj
+        obj.select_set(True)
+        for modifier in obj.modifiers:
+            if modifier.type == 'ARMATURE':
+                continue
+            print(bpy.ops.object.modifier_apply(modifier=modifier.name))
 
 def export_gltf(settings, src, dst):
     print('Converting .blend file ({}) to .gltf ({})'.format(src, dst))
@@ -116,6 +137,8 @@ def export_gltf(settings, src, dst):
 
     common.make_particles_real()
     add_actions_to_nla()
+
+    prepare_meshes()
 
     bpy.ops.export_scene.gltf(
         filepath=dst,
