@@ -46,7 +46,6 @@ def export_gltf(settings, src, dst):
         gltf_settings['extension_exporters'].append(ExtMaterialsLegacy())
 
     collections = [
-        "actions",
         "cameras",
         "images",
         "lamps",
@@ -56,6 +55,9 @@ def export_gltf(settings, src, dst):
         "scenes",
         "textures",
     ]
+    if settings['animations'] != 'skip':
+        collections.append('actions')
+
     scene = {
         cname: list(getattr(bpy.data, cname))
         for cname in collections

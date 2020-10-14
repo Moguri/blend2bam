@@ -178,6 +178,17 @@ def main():
         help='how to handle external textures'
     )
 
+    parser.add_argument(
+        '--animations',
+        choices=[
+            'embed',
+            'separate',
+            'skip',
+        ],
+        default='embed',
+        help='how to handle animation data'
+    )
+
     args = parser.parse_args()
 
     if args.srcdir:
@@ -218,6 +229,7 @@ def main():
         pipeline=args.pipeline,
         no_srgb=args.no_srgb,
         textures=args.textures,
+        animations=args.animations,
     )
 
     convert(settings, srcdir, src, dst)

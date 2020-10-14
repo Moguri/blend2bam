@@ -150,6 +150,7 @@ def export_gltf(settings, src, dst):
         export_force_sampling=True,
         export_apply=True,
         export_tangents=True,
+        export_animations=settings['animations'] != 'skip',
     )
 
     with open(dst) as gltf_file:

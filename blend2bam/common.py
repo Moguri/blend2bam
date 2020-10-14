@@ -8,6 +8,7 @@ Settings = namedtuple('Settings', (
     'pipeline',
     'no_srgb',
     'textures',
+    'animations',
 ))
 Settings.__new__.__defaults__ = (
     'pbr', # material_mode
@@ -17,6 +18,7 @@ Settings.__new__.__defaults__ = (
     'gltf', # pipeline
     'False', # no_srg
     'ref', # textures
+    'embed', # animations
 )
 
 class ConverterBase:
