@@ -71,6 +71,23 @@ def export_physics(gltf_data):
             collision_shapes['shapes'][0]['mesh'] = meshref
         gltf_node['extensions']['PANDA3D_physics_collision_shapes'] = collision_shapes
 
+
+def fix_image_uri(gltf_data):
+    blender_imgs = {
+        i.name.rsplit('.', 1)[0]: i
+        for i in bpy.data.images
+    }
+    for img in gltf_data.get('images', []):
+        blender_img = blender_imgs.get(img['name'], None)
+        if blender_img is None:
+            print(f'Warning: Failed to find image data for {img["name"]}, skipping')
+        if blender_img.source == 'FILE':
+            filepath = blender_img.filepath
+            if filepath.startswith('//'):
+                filepath = filepath[2:]
+            img['uri'] = filepath
+
+
 def add_actions_to_nla():
     def can_object_use_action(obj, action):
         for fcurve in action.fcurves:
@@ -157,6 +174,8 @@ def export_gltf(settings, src, dst):
         gltf_data = json.load(gltf_file)
 
     export_physics(gltf_data)
+    if settings['textures'] == 'ref':
+        fix_image_uri(gltf_data)
     with open(dst, 'w') as gltf_file:
         json.dump(gltf_data, gltf_file, indent=4)
 
