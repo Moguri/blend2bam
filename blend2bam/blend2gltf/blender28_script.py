@@ -74,18 +74,20 @@ def export_physics(gltf_data):
 
 def fix_image_uri(gltf_data):
     blender_imgs = {
-        i.name.rsplit('.', 1)[0]: i
+        (os.path.basename(i.filepath) or i.name).rsplit('.', 1)[0]: i
         for i in bpy.data.images
     }
     for img in gltf_data.get('images', []):
         blender_img = blender_imgs.get(img['name'], None)
         if blender_img is None:
             print(f'Warning: Failed to find image data for {img["name"]}, skipping')
+            continue
         if blender_img.source == 'FILE':
             filepath = blender_img.filepath
-            if filepath.startswith('//'):
-                filepath = filepath[2:]
-            img['uri'] = filepath
+            if filepath:
+                if filepath.startswith('//'):
+                    filepath = filepath[2:]
+                img['uri'] = filepath
 
 
 def add_actions_to_nla():
