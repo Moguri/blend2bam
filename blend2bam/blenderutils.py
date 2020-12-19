@@ -5,7 +5,12 @@ import sys
 
 
 def run_blender(args, blenderdir=''):
-    binpath = os.path.join(blenderdir, 'blender')
+    if sys.platform == "darwin":
+        binpath = os.path.join(blenderdir, 'Contents', 'MacOS', 'blender')
+    else:
+        binpath = os.path.join(blenderdir, 'blender')
+        if sys.platform == "win32":
+            binpath += ".exe"
     subprocess.check_call([binpath, '--background'] + args, stdout=None)#subprocess.DEVNULL)
 
 
@@ -28,15 +33,20 @@ def blender_exists(blenderdir=''):
 
 
 def is_blender_28(blenderdir=''):
-    binpath = os.path.join(blenderdir, 'blender')
-    if sys.platform == 'win32':
-        binpath += '.exe'
+    if sys.platform == 'darwin':
+        binpath = os.path.join(blenderdir, 'Contents', 'MacOS', 'Blender')
+    else:
+        binpath = os.path.join(blenderdir, 'blender')
+        if sys.platform == 'win32':
+            binpath += '.exe'
+
     output = subprocess.check_output([binpath, '--version'])
     minor_version = int(output.decode('utf8').split()[1].split('.')[1])
     return minor_version >= 80
 
 def locate_blenderdir():
-    if platform.system() == 'Windows':
+    system = platform.system()
+    if system == 'Windows':
         # pylint: disable=import-error
         import winreg
 
@@ -60,6 +70,10 @@ def locate_blenderdir():
                 return steampath
         except OSError:
             pass
+
+    elif system == 'Darwin':
+        if os.path.isfile('/Applications/Blender.app/Contents/MacOS/Blender'):
+            return '/Applications/Blender.app'
 
     # Couldn't find anything better
     return ''
