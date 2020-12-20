@@ -19,7 +19,6 @@ jobs:
       run: |
         sudo apt-get install -y libglu1-mesa
         sudo snap install blender --channel=${{ matrix.blender }}/stable --classic
-        echo "::add-path::/snap/bin"
     - name: Install Package
       run: |
         pip install -e .
