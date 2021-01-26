@@ -4,6 +4,9 @@ import subprocess
 import sys
 
 
+_VERSION = None
+
+
 def run_blender(args, blenderdir=''):
     if sys.platform == "darwin":
         binpath = os.path.join(blenderdir, 'Contents', 'MacOS', 'blender')
@@ -32,7 +35,11 @@ def blender_exists(blenderdir=''):
         return False
 
 
-def is_blender_28(blenderdir=''):
+def get_blender_version(blenderdir=''):
+    global _VERSION # pylint: disable=global-statement
+    if _VERSION:
+        return _VERSION
+
     if sys.platform == 'darwin':
         binpath = os.path.join(blenderdir, 'Contents', 'MacOS', 'Blender')
     else:
@@ -41,8 +48,16 @@ def is_blender_28(blenderdir=''):
             binpath += '.exe'
 
     output = subprocess.check_output([binpath, '--version'])
-    minor_version = int(output.decode('utf8').split()[1].split('.')[1])
-    return minor_version >= 80
+    output = output.decode('utf8')
+    version = [int(i) for i in output.split()[1].split('.')]
+    _VERSION = version
+    return version
+
+
+def is_blender_28(blenderdir=''):
+    version = get_blender_version(blenderdir)
+    return version[0] >= 2 and version[1] >= 80
+
 
 def locate_blenderdir():
     system = platform.system()
