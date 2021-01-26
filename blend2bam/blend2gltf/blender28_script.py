@@ -136,9 +136,10 @@ def prepare_meshes():
     armature_meshes = [
         obj
         for obj in bpy.data.objects
-        if is_armature_mesh(obj)
+        if is_armature_mesh(obj) and obj.name in bpy.context.view_layer.objects
     ]
 
+    # Pre-apply modifiers for faster conversion times
     bpy.ops.object.select_all(action='DESELECT')
     for obj in armature_meshes:
         bpy.context.view_layer.objects.active = obj
@@ -146,7 +147,6 @@ def prepare_meshes():
         for modifier in obj.modifiers:
             if modifier.type == 'ARMATURE':
                 continue
-            print(bpy.ops.object.modifier_apply(modifier=modifier.name))
 
 def export_gltf(settings, src, dst):
     print('Converting .blend file ({}) to .gltf ({})'.format(src, dst))
