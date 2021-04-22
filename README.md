@@ -67,7 +67,7 @@ This *does not* add support to `pview`, which is a C++ application that does not
 `blend2bam` has support for multiple backend "pipelines." Currently, `gltf` and `egg` are supported.
 For Blender 2.7x, `gltf` uses [blendergltf](https://github.com/Kupoman/blendergltf) and [panda3d-gltf](https://github.com/Moguri/panda3d-gltf) while `egg` uses [YABEE](https://github.com/09th/YABEE) and `egg2bam` from the Panda3d SDK.
 For Blender 2.80+ (including 2.90+), only `gltf` is supported and uses the glTF exporter built into Blender 2.80+ instead of blendergltf.
-The below table hightlights some of the differences.
+The below table highlights some of the differences.
 
 |Feature|glTF (2.7x)|EGG (2.7x)|glTF (2.8+)|
 |---|:---:|:---:|:---:|
