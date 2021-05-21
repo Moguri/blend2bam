@@ -14,7 +14,7 @@ def convert(settings, srcdir, src, dst):
         from .gltf2bam import ConverterGltf2Bam
         tmp2dst = ConverterGltf2Bam(settings)
         tmpext = '.gltf'
-        if blenderutils.is_blender_28(settings.blender_dir):
+        if blenderutils.is_blender_28(settings.blender_dir, settings.blender_bin):
             from .blend2gltf import ConverterBlend2Gltf28
             src2tmp = ConverterBlend2Gltf28(settings)
         else:
@@ -146,6 +146,12 @@ def main():
     )
 
     parser.add_argument(
+        '--blender-bin',
+        default='blender',
+        help='name of the blender binary to use'
+    )
+
+    parser.add_argument(
         '--append-ext',
         action='store_true',
         help='append extension on the destination instead of replacing it (batch mode only)'
@@ -209,7 +215,7 @@ def main():
         if args.blender_dir:
             print('Auto-detected Blender installed at {}'.format(args.blender_dir))
 
-    if not blenderutils.blender_exists(args.blender_dir):
+    if not blenderutils.blender_exists(args.blender_dir, args.blender_bin):
         print(
             'Blender not found! Try adding Blender to the system PATH or using '
             '--blender-dir to point to its location',
@@ -217,7 +223,7 @@ def main():
         )
         sys.exit(1)
 
-    if blenderutils.is_blender_28(args.blender_dir) and args.pipeline == 'egg':
+    if blenderutils.is_blender_28(args.blender_dir, args.blender_bin) and args.pipeline == 'egg':
         print('EGG is not support for Blender 2.8+, falling back go to gltf pipeline')
         args.pipeline = 'gltf'
 
@@ -225,6 +231,7 @@ def main():
         material_mode=args.material_mode,
         physics_engine=args.physics_engine,
         blender_dir=args.blender_dir,
+        blender_bin=args.blender_bin,
         append_ext=args.append_ext,
         pipeline=args.pipeline,
         no_srgb=args.no_srgb,

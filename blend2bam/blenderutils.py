@@ -7,45 +7,47 @@ import sys
 _VERSION = None
 
 
-def run_blender(args, blenderdir=''):
+def _get_binpath(blenderdir, blenderbin):
     if sys.platform == "darwin":
-        binpath = os.path.join(blenderdir, 'Contents', 'MacOS', 'blender')
+        binpath = os.path.join(blenderdir, 'Contents', 'MacOS', blenderbin)
     else:
-        binpath = os.path.join(blenderdir, 'blender')
+        binpath = os.path.join(blenderdir, blenderbin)
         if sys.platform == "win32":
             binpath += ".exe"
+
+    return binpath
+
+
+def run_blender(args, blenderdir='', blenderbin='blender'):
+    binpath = _get_binpath(blenderdir, blenderbin)
     subprocess.check_call([binpath, '--background'] + args, stdout=None)#subprocess.DEVNULL)
 
 
-def run_blender_script(script, args, blenderdir=''):
+def run_blender_script(script, args, blenderdir='', blenderbin='blender'):
     run_blender(
         [
             '-P', script,
             '--',
         ] + args,
-        blenderdir=blenderdir
+        blenderdir=blenderdir,
+        blenderbin=blenderbin
     )
 
 
-def blender_exists(blenderdir=''):
+def blender_exists(blenderdir='', blenderbin='blender'):
     try:
-        is_blender_28(blenderdir=blenderdir)
+        is_blender_28(blenderdir=blenderdir, blenderbin=blenderbin)
         return True
     except FileNotFoundError:
         return False
 
 
-def get_blender_version(blenderdir=''):
+def get_blender_version(blenderdir='', blenderbin='blender'):
     global _VERSION # pylint: disable=global-statement
     if _VERSION:
         return _VERSION
 
-    if sys.platform == 'darwin':
-        binpath = os.path.join(blenderdir, 'Contents', 'MacOS', 'Blender')
-    else:
-        binpath = os.path.join(blenderdir, 'blender')
-        if sys.platform == 'win32':
-            binpath += '.exe'
+    binpath = _get_binpath(blenderdir, blenderbin)
 
     output = subprocess.check_output([binpath, '--version'])
     output = output.decode('utf8')
@@ -54,8 +56,8 @@ def get_blender_version(blenderdir=''):
     return version
 
 
-def is_blender_28(blenderdir=''):
-    version = get_blender_version(blenderdir)
+def is_blender_28(blenderdir='', blenderbin='blender'):
+    version = get_blender_version(blenderdir=blenderdir, blenderbin=blenderbin)
     return version[0] >= 2 and version[1] >= 80
 
 
