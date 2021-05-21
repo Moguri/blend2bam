@@ -47,6 +47,8 @@ optional arguments:
   --srcdir SRCDIR       a common source directory to use when specifying multiple source files
   --blender-dir BLENDER_DIR
                         directory that contains the blender binary
+  --blender-bin BLENDER_BIN
+                        name of the blender binary to use
   --append-ext          append extension on the destination instead of replacing it (batch mode only)
   --pipeline {gltf,egg}
                         the backend pipeline used to convert files
