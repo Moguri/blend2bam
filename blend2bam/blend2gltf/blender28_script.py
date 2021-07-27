@@ -71,6 +71,11 @@ def export_physics(gltf_data):
             collision_shapes['shapes'][0]['mesh'] = meshref
         gltf_node['extensions']['PANDA3D_physics_collision_shapes'] = collision_shapes
 
+        # Remove the visible mesh from the gltf_node if the object
+        # is in a specific collection
+        if any(list(filter(lambda x:"InvisibleColliders" in x.name, obj.users_collection))):
+            del gltf_node["mesh"]
+
 
 def fix_image_uri(gltf_data):
     blender_imgs = {
