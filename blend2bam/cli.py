@@ -195,6 +195,12 @@ def main():
         help='how to handle animation data'
     )
 
+    parser.add_argument(
+        '--invisible-collisions-collection',
+        default='InvisibleCollisions',
+        help='name of a collection in blender whos collision objects will be exported without a visible geom node'
+    )
+
     args = parser.parse_args()
 
     if args.srcdir:
@@ -237,6 +243,7 @@ def main():
         no_srgb=args.no_srgb,
         textures=args.textures,
         animations=args.animations,
+        invisible_collisions_collection=args.invisible_collisions_collection,
     )
 
     convert(settings, srcdir, src, dst)
