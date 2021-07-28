@@ -8,7 +8,7 @@ sys.path.append(os.path.join(os.path.dirname(__file__), '..', ))
 import blender_script_common as common #pylint: disable=import-error,wrong-import-position
 
 
-def export_physics(gltf_data):
+def export_physics(gltf_data, settings):
     gltf_data.setdefault('extensionsUsed', []).append('BLENDER_physics')
 
 
@@ -73,7 +73,8 @@ def export_physics(gltf_data):
 
         # Remove the visible mesh from the gltf_node if the object
         # is in a specific collection
-        if any(list(filter(lambda x:"InvisibleColliders" in x.name, obj.users_collection))):
+        collection = settings['invisible_collisions_collection']
+        if any(list(filter(lambda x:collection in x.name, obj.users_collection))):
             del gltf_node["mesh"]
 
 
@@ -180,7 +181,7 @@ def export_gltf(settings, src, dst):
     with open(dst) as gltf_file:
         gltf_data = json.load(gltf_file)
 
-    export_physics(gltf_data)
+    export_physics(gltf_data, settings)
     if settings['textures'] == 'ref':
         fix_image_uri(gltf_data)
     with open(dst, 'w') as gltf_file:

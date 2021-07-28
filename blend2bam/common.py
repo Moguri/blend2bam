@@ -10,6 +10,7 @@ Settings = namedtuple('Settings', (
     'no_srgb',
     'textures',
     'animations',
+    'invisible_collisions_collection',
 ))
 Settings.__new__.__defaults__ = (
     'pbr', # material_mode
@@ -21,6 +22,7 @@ Settings.__new__.__defaults__ = (
     'False', # no_srg
     'ref', # textures
     'embed', # animations
+    'InvisibleCollisions', # invisible_collisions_collection
 )
 
 class ConverterBase:
