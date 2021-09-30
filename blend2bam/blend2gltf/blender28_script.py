@@ -148,6 +148,13 @@ def prepare_meshes():
             if modifier.type == 'ARMATURE':
                 continue
 
+def remove_hide_render():
+    # Don't export objects that are hidden for rendering
+    for obj in bpy.data.objects:
+        if obj.hide_render:
+            print(obj.name, 'is hidden from render. Skipping.')
+            bpy.data.objects.remove(obj, do_unlink=True)
+
 def export_gltf(settings, src, dst):
     print('Converting .blend file ({}) to .gltf ({})'.format(src, dst))
 
@@ -158,6 +165,7 @@ def export_gltf(settings, src, dst):
     add_actions_to_nla()
 
     prepare_meshes()
+    remove_hide_render()
 
     bpy.ops.export_scene.gltf(
         filepath=dst,
