@@ -170,6 +170,8 @@ def export_gltf(settings, src, dst):
         export_apply=True,
         export_tangents=True,
         export_animations=settings['animations'] != 'skip',
+        use_mesh_edges=True,
+        use_mesh_vertices=True,
     )
 
     with open(dst) as gltf_file:
