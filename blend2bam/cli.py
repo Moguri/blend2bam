@@ -198,7 +198,8 @@ def main():
     parser.add_argument(
         '--invisible-collisions-collection',
         default='InvisibleCollisions',
-        help='name of a collection in blender whos collision objects will be exported without a visible geom node'
+        help='name of a collection in blender whose collision objects ' \
+             'will be exported without a visible geom node'
     )
 
     args = parser.parse_args()

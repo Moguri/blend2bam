@@ -74,7 +74,7 @@ def export_physics(gltf_data, settings):
         # Remove the visible mesh from the gltf_node if the object
         # is in a specific collection
         collection = settings['invisible_collisions_collection']
-        if any(list(filter(lambda x:collection in x.name, obj.users_collection))):
+        if list([x for x in obj.users_collection if x.name == collection]):
             del gltf_node["mesh"]
 
 
