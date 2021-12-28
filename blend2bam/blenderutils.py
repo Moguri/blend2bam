@@ -1,10 +1,8 @@
+import functools
 import os
 import platform
 import subprocess
 import sys
-
-
-_VERSION = None
 
 
 def _get_binpath(blenderdir, blenderbin):
@@ -34,6 +32,7 @@ def run_blender_script(script, args, blenderdir='', blenderbin='blender'):
     )
 
 
+@functools.lru_cache(maxsize=None)
 def blender_exists(blenderdir='', blenderbin='blender'):
     try:
         is_blender_28(blenderdir=blenderdir, blenderbin=blenderbin)
@@ -42,25 +41,23 @@ def blender_exists(blenderdir='', blenderbin='blender'):
         return False
 
 
+@functools.lru_cache(maxsize=None)
 def get_blender_version(blenderdir='', blenderbin='blender'):
-    global _VERSION # pylint: disable=global-statement
-    if _VERSION:
-        return _VERSION
-
     binpath = _get_binpath(blenderdir, blenderbin)
 
     output = subprocess.check_output([binpath, '--version'])
     output = output.decode('utf8')
     version = [int(i) for i in output.split()[1].split('.')]
-    _VERSION = version
     return version
 
 
+@functools.lru_cache(maxsize=None)
 def is_blender_28(blenderdir='', blenderbin='blender'):
     version = get_blender_version(blenderdir=blenderdir, blenderbin=blenderbin)
     return version[0] >= 2 and version[1] >= 80
 
 
+@functools.lru_cache(maxsize=None)
 def locate_blenderdir():
     system = platform.system()
     if system == 'Windows':
