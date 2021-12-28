@@ -54,7 +54,7 @@ def get_blender_version(blenderdir='', blenderbin='blender'):
 @functools.lru_cache(maxsize=None)
 def is_blender_28(blenderdir='', blenderbin='blender'):
     version = get_blender_version(blenderdir=blenderdir, blenderbin=blenderbin)
-    return version[0] >= 2 and version[1] >= 80
+    return version[0] >= 3 or (version[0] == 2 and version[1] >= 80)
 
 
 @functools.lru_cache(maxsize=None)
