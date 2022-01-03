@@ -119,6 +119,20 @@ Then run the test suite with `pytest`:
 pytest
 ```
 
+## Building Wheels
+
+Install `build`:
+
+```bash
+pip install --upgrade build
+```
+
+and run:
+
+```bash
+python -m build
+```
+
 ## License
 
 [MIT](https://choosealicense.com/licenses/mit/)
