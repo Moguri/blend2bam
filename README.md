@@ -105,6 +105,20 @@ The following conversion guides describe how Blender data gets converted to Pand
 * [glTF for Blender 2.79](docs/conversion-guide-gltf27.md)
 * [EGG for Blender 2.79](docs/conversion-guide-egg27.md)
 
+## Running Tests
+
+First install `blend2bam` in editable mode along with `test` extras:
+
+```bash
+pip install -e .[test]
+```
+
+Then run the test suite with `pytest`:
+
+```bash
+pytest
+```
+
 ## License
 
 [MIT](https://choosealicense.com/licenses/mit/)

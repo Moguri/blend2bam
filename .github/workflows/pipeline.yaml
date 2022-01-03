@@ -21,10 +21,10 @@ jobs:
         sudo snap install blender --channel=${{ matrix.blender }}/stable --classic
     - name: Install Package
       run: |
-        pip install -e .
+        pip install -e .[test]
     - name: Run Tests
       run: |
-        python setup.py test
+        python -m pytest
   build_publish:
     needs: tests
     runs-on: ubuntu-latest
