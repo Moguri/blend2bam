@@ -6,19 +6,23 @@ import sys
 
 
 def _get_binpath(blenderdir, blenderbin):
-    if sys.platform == "darwin":
+    if blenderdir.startswith('flatpak run'):
+        binpath = blenderdir.split()
+    elif sys.platform == "darwin":
         binpath = os.path.join(blenderdir, 'Contents', 'MacOS', blenderbin)
     else:
         binpath = os.path.join(blenderdir, blenderbin)
         if sys.platform == "win32" and not binpath.endswith('.exe'):
             binpath += ".exe"
 
+    if not isinstance(binpath, list):
+        binpath = [binpath]
     return binpath
 
 
 def run_blender(args, blenderdir='', blenderbin='blender'):
     binpath = _get_binpath(blenderdir, blenderbin)
-    subprocess.check_call([binpath, '--background'] + args, stdout=None)#subprocess.DEVNULL)
+    subprocess.check_call(binpath + ['--background'] + args, stdout=None)#subprocess.DEVNULL)
 
 
 def run_blender_script(script, args, blenderdir='', blenderbin='blender'):
@@ -45,7 +49,7 @@ def blender_exists(blenderdir='', blenderbin='blender'):
 def get_blender_version(blenderdir='', blenderbin='blender'):
     binpath = _get_binpath(blenderdir, blenderbin)
 
-    output = subprocess.check_output([binpath, '--version'])
+    output = subprocess.check_output(binpath + ['--version'])
     output = output.decode('utf8')
     version = [int(i) for i in output.split()[1].split('.')]
     return version
@@ -88,6 +92,14 @@ def locate_blenderdir():
     elif system == 'Darwin':
         if os.path.isfile('/Applications/Blender.app/Contents/MacOS/Blender'):
             return '/Applications/Blender.app'
+
+    # Check for flatpak Blender
+    try:
+        flatpakloc = 'flatpak run --filesystem=/tmp org.blender.Blender'
+        subprocess.check_call(flatpakloc.split() + ['--version'], stdout=None)
+        return flatpakloc
+    except subprocess.CalledProcessError:
+        pass
 
     # Couldn't find anything better
     return ''
