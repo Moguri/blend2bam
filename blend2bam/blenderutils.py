@@ -10,7 +10,7 @@ def _get_binpath(blenderdir, blenderbin):
         binpath = os.path.join(blenderdir, 'Contents', 'MacOS', blenderbin)
     else:
         binpath = os.path.join(blenderdir, blenderbin)
-        if sys.platform == "win32":
+        if sys.platform == "win32" and not binpath.endswith('.exe'):
             binpath += ".exe"
 
     return binpath

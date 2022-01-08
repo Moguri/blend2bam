@@ -16,9 +16,8 @@ Use [pip](https://github.com/panda3d/panda3d) to install the panda3d-blend2bam p
 pip install panda3d-blend2bam
 ```
 
-`blend2bam` also requires that Blender is installed.
-Ideally `blender` is available on the system PATH.
-However, if it's not, the directory containing `blender` can be specified with `--blender-dir` (see CLI usage).
+Blender is required for `blend2bam` (ideally available on the system PATH).
+If it is not, the directory containing `blender` can be specified with `--blender-dir` (see CLI usage).
 
 ## Usage
 
