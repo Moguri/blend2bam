@@ -119,6 +119,7 @@ def add_actions_to_nla():
 
     for obj in armature_objects:
         try:
+            print(bpy.context.view_layer)
             obj.select_set(True)
             actions = [
                 action
