@@ -9,7 +9,7 @@ import blender_script_common as common #pylint: disable=import-error,wrong-impor
 
 
 def export_physics(gltf_data, settings):
-    gltf_data.setdefault('extensionsUsed', []).append('BLENDER_physics')
+    gltf_data.setdefault('extensionsUsed', []).extend(['BLENDER_physics', 'PANDA3D_physics_collision_shapes'])
 
 
     objs = [
