@@ -98,7 +98,7 @@ def locate_blenderdir():
         flatpakloc = 'flatpak run --filesystem=/tmp org.blender.Blender'
         subprocess.check_call(flatpakloc.split() + ['--version'], stdout=None)
         return flatpakloc
-    except subprocess.CalledProcessError:
+    except (subprocess.CalledProcessError, FileNotFoundError):
         pass
 
     # Couldn't find anything better
