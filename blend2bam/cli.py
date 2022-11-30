@@ -101,7 +101,8 @@ def convert(settings, srcdir, src, dst):
 
 def main():
     parser = argparse.ArgumentParser(
-        description='CLI tool to convert Blender blend files to Panda3D BAM files'
+        description='CLI tool to convert Blender blend files to Panda3D BAM files',
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
     )
 
     parser.add_argument(
