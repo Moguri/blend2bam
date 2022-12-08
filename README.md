@@ -24,9 +24,9 @@ If it is not, the directory containing `blender` can be specified with `--blende
 ### CLI
 
 ```
-usage: blend2bam [-h] [--version] [-m {legacy,pbr}] [--physics-engine {builtin,bullet}] [--srcdir SRCDIR]
-                 [--blender-dir BLENDER_DIR] [--append-ext] [--pipeline {gltf,egg}]
-                 [--no-srgb] [--textures {ref,copy,embed}]
+usage: blend2bam [-h] [--version] [-m {legacy,pbr}] [--physics-engine {builtin,bullet}] [--srcdir SRCDIR] [--blender-dir BLENDER_DIR]
+                 [--blender-bin BLENDER_BIN] [--append-ext] [--pipeline {gltf,egg}] [--no-srgb] [--textures {ref,copy,embed}]
+                 [--animations {embed,separate,skip}] [--invisible-collisions-collection INVISIBLE_COLLISIONS_COLLECTION]
                  src [src ...] dst
 
 CLI tool to convert Blender blend files to Panda3D BAM files
@@ -35,26 +35,28 @@ positional arguments:
   src                   source path
   dst                   destination path
 
-optional arguments:
+options:
   -h, --help            show this help message and exit
   --version             show program's version number and exit
   -m {legacy,pbr}, --material-mode {legacy,pbr}
-                        control how materials are exported
+                        control how materials are exported (default: pbr)
   --physics-engine {builtin,bullet}
-                        the physics engine to build collision solids for
-  --srcdir SRCDIR       a common source directory to use when specifying multiple source files
+                        the physics engine to build collision solids for (default: builtin)
+  --srcdir SRCDIR       a common source directory to use when specifying multiple source files (default: None)
   --blender-dir BLENDER_DIR
-                        directory that contains the blender binary
+                        directory that contains the blender binary (default: )
   --blender-bin BLENDER_BIN
-                        name of the blender binary to use
-  --append-ext          append extension on the destination instead of replacing it (batch mode only)
+                        name of the blender binary to use (default: blender)
+  --append-ext          append extension on the destination instead of replacing it (batch mode only) (default: False)
   --pipeline {gltf,egg}
-                        the backend pipeline used to convert files
-  --no-srgb             do not load textures as sRGB textures (only for glTF pipelines)
+                        the backend pipeline used to convert files (default: gltf)
+  --no-srgb             do not load textures as sRGB textures (only for glTF pipelines) (default: False)
   --textures {ref,copy,embed}
-                        how to handle external textures
+                        how to handle external textures (default: ref)
   --animations {embed,separate,skip}
-                        how to handle animation data
+                        how to handle animation data (default: embed)
+  --invisible-collisions-collection INVISIBLE_COLLISIONS_COLLECTION
+                        name of a collection in blender whose collision objects will be exported without a visible geom node (default: InvisibleCollisions)
 ```
 
 ### Python File Loader
