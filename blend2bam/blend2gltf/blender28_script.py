@@ -155,6 +155,7 @@ def prepare_meshes():
         for modifier in obj.modifiers:
             if modifier.type == 'ARMATURE':
                 continue
+            bpy.ops.object.modifier_apply(modifier=modifier.name)
 
 def export_gltf(settings, src, dst):
     print('Converting .blend file ({}) to .gltf ({})'.format(src, dst))
