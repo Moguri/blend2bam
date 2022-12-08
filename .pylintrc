@@ -9,7 +9,7 @@
 
 # Add files or directories to the blacklist. They should be base names, not
 # paths.
-ignore=.git,templates,toml.py,blender,setup.py,yabee,blendergltf,.eggs
+ignore=.git,templates,toml.py,blender,setup.py,yabee,blendergltf,.eggs,build
 
 # Add files or directories matching the regex patterns to the blacklist. The
 # regex matches against base names, not paths.
