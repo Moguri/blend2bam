@@ -176,7 +176,6 @@ def export_gltf(settings, src, dst):
         export_yup=False,
         export_lights=True,
         export_force_sampling=True,
-        export_apply=True,
         export_tangents=True,
         export_animations=settings['animations'] != 'skip',
     )
