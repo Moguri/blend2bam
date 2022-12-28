@@ -19,7 +19,7 @@ Settings.__new__.__defaults__ = (
     'blender', # blender_bin
     False, # append_ext
     'gltf', # pipeline
-    'False', # no_srg
+    False, # no_srg
     'ref', # textures
     'embed', # animations
     'InvisibleCollisions', # invisible_collisions_collection
