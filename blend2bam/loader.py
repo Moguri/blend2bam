@@ -1,3 +1,4 @@
+import dataclasses
 import tempfile
 
 import panda3d.core as p3d
@@ -20,7 +21,7 @@ class BlendLoader:
         settings = BlendLoader.global_settings
         if not settings.blender_dir and not blenderutils.blender_exists():
             blender_dir = blenderutils.locate_blenderdir()
-            settings = settings._replace(blender_dir=blender_dir)
+            settings = dataclasses.replace(BlendLoader.global_settings, blender_dir=blender_dir)
 
         loader = p3d.Loader.get_global_ptr()
         with tempfile.NamedTemporaryFile(suffix='.bam') as bamfile:
