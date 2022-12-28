@@ -1,29 +1,18 @@
-from collections import namedtuple
+from dataclasses import dataclass
 
-Settings = namedtuple('Settings', (
-    'material_mode',
-    'physics_engine',
-    'blender_dir',
-    'blender_bin',
-    'append_ext',
-    'pipeline',
-    'no_srgb',
-    'textures',
-    'animations',
-    'invisible_collisions_collection',
-))
-Settings.__new__.__defaults__ = (
-    'pbr', # material_mode
-    'builtin', # physics engine
-    '', # blender_dir
-    'blender', # blender_bin
-    False, # append_ext
-    'gltf', # pipeline
-    False, # no_srg
-    'ref', # textures
-    'embed', # animations
-    'InvisibleCollisions', # invisible_collisions_collection
-)
+@dataclass
+class Settings:
+    material_mode: str = 'pbr'
+    physics_engine: str = 'builtin'
+    blender_dir: str = ''
+    blender_bin: str = 'blender'
+    append_ext: bool = False
+    pipeline: str = 'gltf'
+    no_srgb: bool = False
+    textures: str = 'ref'
+    animations: str = 'embed'
+    invisible_collisions_collection: str = 'InvisibleCollisions'
+
 
 class ConverterBase:
     '''Implements common functionality for converters'''

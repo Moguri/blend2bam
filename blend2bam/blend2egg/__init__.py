@@ -1,3 +1,4 @@
+import dataclasses
 import os
 import json
 import shutil
@@ -23,7 +24,7 @@ class ConverterBlend2Egg(ConverterBase):
     def convert_batch(self, srcroot, dstdir, files):
         blenderdir = self.settings.blender_dir
         settings_file = tempfile.NamedTemporaryFile(mode='w', delete=False)
-        json.dump(self.settings._asdict(), settings_file)
+        json.dump(dataclasses.asdict(self.settings), settings_file)
         settings_file.close() # Close so the tempfile can be re-opened in Blender on Windows
         args = [
             settings_file.name,
