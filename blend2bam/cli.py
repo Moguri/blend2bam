@@ -115,6 +115,12 @@ def main():
     parser.add_argument('dst', type=str, help='destination path')
 
     parser.add_argument(
+        '-v', '--verbose',
+        action='store_true',
+        help='print out extra information'
+    )
+
+    parser.add_argument(
         '-m', '--material-mode',
         choices=[
             'legacy',
@@ -246,6 +252,7 @@ def main():
         textures=args.textures,
         animations=args.animations,
         invisible_collisions_collection=args.invisible_collisions_collection,
+        verbose=args.verbose,
     )
 
     convert(settings, srcdir, src, dst)

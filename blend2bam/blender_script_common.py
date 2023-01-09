@@ -16,12 +16,14 @@ def convert_files(convertfn, outputext):
     if not dstdir.endswith(os.sep):
         dstdir += os.sep
 
-    print('srcroot:', srcroot)
-    print('Exporting:', blendfiles)
-    print('Export to:', dstdir)
-
     with open(settings_fname) as settings_file:
         settings = json.load(settings_file)
+
+    if settings['verbose']:
+        print('srcroot:', srcroot)
+        print('Exporting:', blendfiles)
+        print('Export to:', dstdir)
+
 
     try:
         for blendfile in blendfiles:

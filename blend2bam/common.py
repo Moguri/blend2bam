@@ -12,6 +12,7 @@ class Settings:
     textures: str = 'ref'
     animations: str = 'embed'
     invisible_collisions_collection: str = 'InvisibleCollisions'
+    verbose: bool = False
 
 
 class ConverterBase:

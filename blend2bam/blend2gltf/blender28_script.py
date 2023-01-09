@@ -158,7 +158,11 @@ def prepare_meshes():
             bpy.ops.object.modifier_apply(modifier=modifier.name)
 
 def export_gltf(settings, src, dst):
-    print('Converting .blend file ({}) to .gltf ({})'.format(src, dst))
+    if settings['verbose']:
+        print('Converting .blend file ({}) to .gltf ({})'.format(src, dst))
+    else:
+        from io_scene_gltf2.io.com.gltf2_io_debug import set_output_level #pylint: disable=import-error
+        set_output_level('WARNING')
 
     dstdir = os.path.dirname(dst)
     os.makedirs(dstdir, exist_ok=True)
