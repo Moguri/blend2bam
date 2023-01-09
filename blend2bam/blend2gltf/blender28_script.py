@@ -167,17 +167,26 @@ def export_gltf(settings, src, dst):
 
     prepare_meshes()
 
-    bpy.ops.export_scene.gltf(
-        filepath=dst,
-        export_format='GLTF_EMBEDDED' if settings['textures'] == 'embed' else 'GLTF_SEPARATE',
-        export_cameras=True,
-        export_extras=True,
-        export_yup=False,
-        export_lights=True,
-        export_force_sampling=True,
-        export_tangents=True,
-        export_animations=settings['animations'] != 'skip',
-    )
+    exporter_options = bpy.ops.export_scene.gltf.get_rna_type().properties.keys()
+
+    exp_opts = {
+        'filepath': dst,
+        'export_format': 'GLTF_EMBEDDED' if settings['textures'] == 'embed' else 'GLTF_SEPARATE',
+        'export_cameras': True,
+        'export_extras': True,
+        'export_yup': False,
+        'export_lights': True,
+        'export_force_sampling': True,
+        'export_tangents': True,
+        'export_animations': settings['animations'] != 'skip',
+    }
+
+    if 'use_mesh_edges' in exporter_options:
+        exp_opts['use_mesh_edges'] = True
+    if 'use_mesh_vertices' in exporter_options:
+        exp_opts['use_mesh_vertices'] = True
+
+    bpy.ops.export_scene.gltf(**exp_opts)
 
     with open(dst) as gltf_file:
         gltf_data = json.load(gltf_file)
