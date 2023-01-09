@@ -185,6 +185,8 @@ def export_gltf(settings, src, dst):
         exp_opts['use_mesh_edges'] = True
     if 'use_mesh_vertices' in exporter_options:
         exp_opts['use_mesh_vertices'] = True
+    if 'export_keep_originals' in exporter_options:
+        exp_opts['export_keep_originals'] = True
 
     bpy.ops.export_scene.gltf(**exp_opts)
 
