@@ -135,23 +135,18 @@ def add_actions_to_nla():
             print('Failed to auto-add actions to NLA for {}: {}'.format(obj.name, error), file=sys.stderr)
 
 def prepare_meshes():
-    def is_armature_mesh(obj):
-        for modifier in obj.modifiers:
-            if modifier.type == 'ARMATURE':
-                return True
-        return False
-
-    armature_meshes = [
+    meshes = [
         obj
         for obj in bpy.data.objects
-        if is_armature_mesh(obj) and obj.name in bpy.context.view_layer.objects
+        if obj.type == 'MESH' and obj.name in bpy.context.view_layer.objects
     ]
 
-    # Pre-apply modifiers for faster conversion times
     bpy.ops.object.select_all(action='DESELECT')
-    for obj in armature_meshes:
+    for obj in meshes:
         bpy.context.view_layer.objects.active = obj
         obj.select_set(True)
+
+        # Pre-apply modifiers for faster conversion times
         for modifier in obj.modifiers:
             if modifier.type == 'ARMATURE':
                 continue
