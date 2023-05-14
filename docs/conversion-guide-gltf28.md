@@ -1,4 +1,4 @@
-# Conversion Guide for glTF (Blender 2.80+) Pipeline
+# Conversion Guide
 
 ## General
 

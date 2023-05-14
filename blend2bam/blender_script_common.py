@@ -39,11 +39,6 @@ def convert_files(convertfn, outputext):
         sys.exit(1)
 
 
-def in_blender_28():
-    version = bpy.app.version
-    return version[0] >= 3 or (version[0] == 2 and version[1] >= 80)
-
-
 def make_particles_real():
     try:
         bpy.ops.object.mode_set(mode='OBJECT')
@@ -54,10 +49,7 @@ def make_particles_real():
         if hasattr(obj, 'particle_systems') and obj.particle_systems:
             print('Making particles on {} real'.format(obj.name))
             try:
-                if in_blender_28():
-                    obj.select_set(True)
-                else:
-                    obj.select = True
+                obj.select = True
                 bpy.ops.object.duplicates_make_real()
             except RuntimeError as error:
                 print('Failed to make particles real on {}: {}'.format(obj.name, error), file=sys.stderr)

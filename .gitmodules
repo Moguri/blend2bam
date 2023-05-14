@@ -1,6 +1,0 @@
-[submodule "blend2bam/blend2gltf/blendergltf"]
-	path = blend2bam/blend2gltf/blendergltf
-	url = https://github.com/Kupoman/blendergltf.git
-[submodule "blend2bam/blend2egg/yabee"]
-	path = blend2bam/blend2egg/yabee
-	url = https://github.com/09th/YABEE.git
