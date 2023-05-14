@@ -3,13 +3,9 @@ import os
 import blend2bam
 import blend2bam.blend2gltf
 import blend2bam.gltf2bam
-from blend2bam import blenderutils
 
 
-if blenderutils.is_blender_28():
-    BLEND2GLTF_CONVERTER = blend2bam.blend2gltf.ConverterBlend2Gltf28()
-else:
-    BLEND2GLTF_CONVERTER = blend2bam.blend2gltf.ConverterBlend2Gltf()
+BLEND2GLTF_CONVERTER = blend2bam.blend2gltf.ConverterBlend2Gltf28()
 TESTDIR = os.path.dirname(os.path.abspath(__file__))
 SRCDIR = os.path.join(TESTDIR, 'assets')
 

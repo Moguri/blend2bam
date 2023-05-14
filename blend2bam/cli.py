@@ -6,28 +6,15 @@ import tempfile
 
 from .common import Settings
 from .version import __version__
+from .blend2gltf import ConverterBlend2Gltf28
+from .gltf2bam import ConverterGltf2Bam
 from . import blenderutils
 
 
 def convert(settings, srcdir, src, dst):
-    if settings.pipeline == 'gltf':
-        from .gltf2bam import ConverterGltf2Bam
-        tmp2dst = ConverterGltf2Bam(settings)
-        tmpext = '.gltf'
-        if blenderutils.is_blender_28(settings.blender_dir, settings.blender_bin):
-            from .blend2gltf import ConverterBlend2Gltf28
-            src2tmp = ConverterBlend2Gltf28(settings)
-        else:
-            from .blend2gltf import ConverterBlend2Gltf
-            src2tmp = ConverterBlend2Gltf(settings)
-    elif settings.pipeline == 'egg':
-        from .blend2egg import ConverterBlend2Egg
-        from .egg2bam import ConverterEgg2Bam
-        src2tmp = ConverterBlend2Egg(settings)
-        tmp2dst = ConverterEgg2Bam(settings)
-        tmpext = '.egg'
-    else:
-        raise RuntimeError('Unknown pipeline: {}'.format(settings.pipeline))
+    tmp2dst = ConverterGltf2Bam(settings)
+    tmpext = '.gltf'
+    src2tmp = ConverterBlend2Gltf28(settings)
 
     for src_element in src:
         if not os.path.exists(src_element):
@@ -165,19 +152,9 @@ def main():
     )
 
     parser.add_argument(
-        '--pipeline',
-        choices=[
-            'gltf',
-            'egg',
-        ],
-        default='gltf',
-        help='the backend pipeline used to convert files'
-    )
-
-    parser.add_argument(
         '--no-srgb',
         action='store_true',
-        help='do not load textures as sRGB textures (only for glTF pipelines)'
+        help='do not load textures as sRGB textures'
     )
 
     parser.add_argument(
@@ -237,9 +214,12 @@ def main():
         )
         sys.exit(1)
 
-    if blenderutils.is_blender_28(args.blender_dir, args.blender_bin) and args.pipeline == 'egg':
-        print('EGG is not support for Blender 2.8+, falling back go to gltf pipeline')
-        args.pipeline = 'gltf'
+    if not blenderutils.is_blender_28(args.blender_dir, args.blender_bin):
+        print(
+            'blend2bam requires Blender 2.80+',
+            file=sys.stderr
+        )
+        sys.exit(1)
 
     settings = Settings(
         material_mode=args.material_mode,
@@ -247,7 +227,6 @@ def main():
         blender_dir=args.blender_dir,
         blender_bin=args.blender_bin,
         append_ext=args.append_ext,
-        pipeline=args.pipeline,
         no_srgb=args.no_srgb,
         textures=args.textures,
         animations=args.animations,
