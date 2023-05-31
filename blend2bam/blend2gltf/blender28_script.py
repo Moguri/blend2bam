@@ -150,7 +150,10 @@ def prepare_meshes():
         for modifier in obj.modifiers:
             if modifier.type == 'ARMATURE':
                 continue
-            bpy.ops.object.modifier_apply(modifier=modifier.name)
+            try:
+                bpy.ops.object.modifier_apply(modifier=modifier.name)
+            except RuntimeError as exc:
+                print(f'Failed to apply modifier {modifier.name} on {obj.name}: {exc}')
 
 def export_gltf(settings, src, dst):
     if settings['verbose']:
