@@ -9,7 +9,7 @@ from blend2bam.common import ConverterBase
 
 
 class ConverterBlend2Gltf28(ConverterBase):
-    script_file = os.path.join(os.path.dirname(__file__), 'blender28_script.py')
+    script_file = os.path.join(os.path.dirname(__file__), 'blender_scripts', 'exportgltf.py')
 
     def convert_single(self, src, dst):
         srcroot = os.path.dirname(src)

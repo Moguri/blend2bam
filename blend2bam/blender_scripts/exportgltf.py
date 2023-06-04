@@ -4,8 +4,21 @@ import sys
 
 import bpy #pylint: disable=import-error
 
-sys.path.append(os.path.join(os.path.dirname(__file__), '..', ))
-import blender_script_common as common #pylint: disable=import-error,wrong-import-position
+
+def make_particles_real():
+    try:
+        bpy.ops.object.mode_set(mode='OBJECT')
+    except RuntimeError:
+        pass
+
+    for obj in bpy.data.objects[:]:
+        if hasattr(obj, 'particle_systems') and obj.particle_systems:
+            print('Making particles on {} real'.format(obj.name))
+            try:
+                obj.select = True
+                bpy.ops.object.duplicates_make_real()
+            except RuntimeError as error:
+                print('Failed to make particles real on {}: {}'.format(obj.name, error), file=sys.stderr)
 
 
 def export_physics(gltf_data, settings):
@@ -165,7 +178,7 @@ def export_gltf(settings, src, dst):
     dstdir = os.path.dirname(dst)
     os.makedirs(dstdir, exist_ok=True)
 
-    common.make_particles_real()
+    make_particles_real()
     add_actions_to_nla()
 
     prepare_meshes()
@@ -203,5 +216,40 @@ def export_gltf(settings, src, dst):
         json.dump(gltf_data, gltf_file, indent=4)
 
 
+def convert_files(convertfn, outputext):
+    args = sys.argv[sys.argv.index('--')+1:]
+
+    #print(args)
+    settings_fname, srcroot, dstdir, blendfiles = args[0], args[1], args[2], args[3:]
+
+    if not srcroot.endswith(os.sep):
+        srcroot += os.sep
+
+    if not dstdir.endswith(os.sep):
+        dstdir += os.sep
+
+    with open(settings_fname) as settings_file:
+        settings = json.load(settings_file)
+
+    if settings['verbose']:
+        print('srcroot:', srcroot)
+        print('Exporting:', blendfiles)
+        print('Export to:', dstdir)
+
+
+    try:
+        for blendfile in blendfiles:
+            src = blendfile
+            dst = src.replace(srcroot, dstdir).replace('.blend', '.'+outputext)
+
+            bpy.ops.wm.open_mainfile(filepath=src)
+            convertfn(settings, src, dst)
+    except: #pylint: disable=bare-except
+        import traceback
+        traceback.print_exc(file=sys.stderr)
+        print('Failed to convert {} to {}'.format(src, outputext), file=sys.stderr)
+        sys.exit(1)
+
+
 if __name__ == '__main__':
-    common.convert_files(export_gltf, 'gltf')
+    convert_files(export_gltf, 'gltf')
