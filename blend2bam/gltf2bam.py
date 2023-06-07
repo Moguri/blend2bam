@@ -55,17 +55,11 @@ class ConverterGltf2Bam(ConverterBase):
                 ' than "embed"'
             )
 
-    def convert_single(self, src, dst):
-        dstdir = os.path.dirname(dst)
+
+    def convert(self, srcroot, dstdir, files):
         os.makedirs(dstdir, exist_ok=True)
+        converted_files = []
 
-        run_gltf2bam(src, dst, self.cli_args)
-
-        binfname = dst.replace('.bam', '.bin')
-        if os.path.exists(binfname):
-            os.remove(binfname)
-
-    def convert_batch(self, srcroot, dstdir, files):
         for gltffile in files:
             src = gltffile
             dst = src.replace(str(srcroot), str(dstdir))
@@ -75,4 +69,8 @@ class ConverterGltf2Bam(ConverterBase):
             else:
                 dst = dst.replace('.gltf', '.bam')
 
-            self.convert_single(src, dst)
+            converted_files.append(dst)
+
+            run_gltf2bam(src, dst, self.cli_args)
+
+        return converted_files

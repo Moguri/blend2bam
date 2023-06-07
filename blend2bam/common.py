@@ -13,6 +13,7 @@ class Settings:
     animations: str = 'embed'
     invisible_collisions_collection: str = 'InvisibleCollisions'
     verbose: bool = False
+    dump_info: bool = False
 
 
 class ConverterBase:
@@ -23,10 +24,6 @@ class ConverterBase:
             settings = Settings()
         self.settings = settings
 
-    def convert_single(self, src, dst):
-        '''Convert a single src file to dst'''
-        raise NotImplementedError()
-
-    def convert_batch(self, srcroot, dstdir, files):
+    def convert(self, srcroot, dstdir, files):
         '''Convert files from srcroot to dstdir'''
         raise NotImplementedError()

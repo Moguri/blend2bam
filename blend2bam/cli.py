@@ -1,5 +1,6 @@
 import argparse
 import os
+import shutil
 import sys
 import tempfile
 
@@ -49,42 +50,23 @@ def convert(settings, srcdir, src, dst):
 
     is_batch = len(files_to_convert) > 1 or dst_is_dir
 
+    dstdir = os.path.dirname(dst)
+
     if is_batch and not dst_is_dir:
         print('Destination must be a directory if the source is a directory or multiple files')
 
     try:
-        if is_batch:
-            # Batch conversion
-            tmpfiles = [
-                i.replace(srcdir, dst).replace('.blend', tmpext)
-                for i in files_to_convert
-            ]
-            src2tmp.convert_batch(srcdir, dst, files_to_convert)
-            tmp2dst.convert_batch(dst, dst, tmpfiles)
-        else:
-            # Single file conversion
-            srcfile = files_to_convert[0]
-            if dst_is_dir:
-                # Destination is a directory, add a filename
-                dst = os.path.join(dst, os.path.basename(srcfile.replace('blend', 'bam')))
+        with tempfile.TemporaryDirectory() as tmpdir:
+            tmpfiles = src2tmp.convert(srcdir, tmpdir, files_to_convert)
+            outfiles = tmp2dst.convert(tmpdir, dstdir, tmpfiles)
 
-            tmpfile = tempfile.NamedTemporaryFile(delete=False)
-            tmpfile.close()
-            tmpfiles = [tmpfile.name]
-
-            src2tmp.convert_single(srcfile, tmpfile.name)
-            tmp2dst.convert_single(tmpfile.name, dst)
+            if not dst_is_dir:
+                shutil.move(outfiles[0], dst)
     except Exception: #pylint: disable=broad-except
         import traceback
         print(traceback.format_exc(), file=sys.stderr)
         print('Failed to convert all files', file=sys.stderr)
         sys.exit(1)
-    finally:
-        _ = [
-            os.remove(i)
-            for i in tmpfiles
-            if os.path.exists(i)
-        ]
 
 def main():
     parser = argparse.ArgumentParser(
