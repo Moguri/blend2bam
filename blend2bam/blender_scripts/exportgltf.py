@@ -174,15 +174,17 @@ def export_gltf(settings, src, dst):
         from io_scene_gltf2.io.com.gltf2_io_debug import set_output_level #pylint: disable=import-error
         set_output_level('WARNING')
 
+    exporter_options = bpy.ops.export_scene.gltf.get_rna_type().properties.keys()
+
     dstdir = os.path.dirname(dst)
     os.makedirs(dstdir, exist_ok=True)
 
     make_particles_real()
-    add_actions_to_nla()
+    if 'export_animation_mode' not in exporter_options:
+        add_actions_to_nla()
 
     prepare_meshes()
 
-    exporter_options = bpy.ops.export_scene.gltf.get_rna_type().properties.keys()
 
     exp_opts = {
         'filepath': dst,
@@ -194,6 +196,7 @@ def export_gltf(settings, src, dst):
         'export_force_sampling': True,
         'export_tangents': True,
         'export_animations': settings['animations'] != 'skip',
+        'export_optimize_animation_size': False,
     }
 
     if 'use_mesh_edges' in exporter_options:
