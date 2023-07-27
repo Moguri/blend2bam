@@ -14,7 +14,6 @@ from . import blenderutils
 
 def convert(settings, srcdir, src, dst):
     tmp2dst = ConverterGltf2Bam(settings)
-    tmpext = '.gltf'
     src2tmp = ConverterBlend2Gltf28(settings)
 
     for src_element in src:

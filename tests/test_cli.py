@@ -5,7 +5,6 @@ import pytest
 
 import blend2bam
 import blend2bam.cli
-from blend2bam import blenderutils
 
 
 TESTDIR = os.path.dirname(os.path.abspath(__file__))

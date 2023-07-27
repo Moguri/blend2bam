@@ -37,8 +37,11 @@ blend2bam = "blend2bam.cli:main"
 [project.entry-points."panda3d.loaders"]
 blend = "blend2bam.loader:BlendLoader"
 
+[tool.setuptools]
+packages = ["blend2bam"]
+
 [tool.setuptools.dynamic]
 version = {attr = "blend2bam.version.__version__"}
 
-[tool.pytest]
+[tool.pytest.ini_options]
 addopts = "--pylint"

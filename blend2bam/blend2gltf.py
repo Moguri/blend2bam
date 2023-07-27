@@ -1,7 +1,6 @@
 import dataclasses
 import os
 import json
-import shutil
 import tempfile
 
 from blend2bam import blenderutils
