@@ -196,7 +196,6 @@ def export_gltf(settings, src, dst):
         'export_force_sampling': True,
         'export_tangents': True,
         'export_animations': settings['animations'] != 'skip',
-        'export_optimize_animation_size': False,
     }
 
     if 'use_mesh_edges' in exporter_options:
