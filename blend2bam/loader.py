@@ -1,4 +1,5 @@
 import dataclasses
+import os
 import tempfile
 
 import panda3d.core as p3d
@@ -24,13 +25,14 @@ class BlendLoader:
             settings = dataclasses.replace(BlendLoader.global_settings, blender_dir=blender_dir)
 
         loader = p3d.Loader.get_global_ptr()
-        with tempfile.NamedTemporaryFile(suffix='.bam') as bamfile:
-            bamfilepath = p3d.Filename.from_os_specific(bamfile.name)
-            bamfilepath.make_true_case()
-            convert(settings,
-                    path.get_dirname(),
-                    [path],
-                    bamfilepath.to_os_specific())
+        with tempfile.TemporaryDirectory() as tmpdir:
+            bamfilepath = os.path.join(tmpdir, 'out.bam')
+            convert(
+                settings,
+                path.get_dirname(),
+                [path],
+                bamfilepath
+            )
 
             options = p3d.LoaderOptions(options)
             options.flags |= p3d.LoaderOptions.LF_no_cache
