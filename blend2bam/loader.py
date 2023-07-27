@@ -36,4 +36,4 @@ class BlendLoader:
 
             options = p3d.LoaderOptions(options)
             options.flags |= p3d.LoaderOptions.LF_no_cache
-            return loader.load_sync(bamfilepath, options=options)
+            return loader.load_sync(p3d.Filename.from_os_specific(bamfilepath), options=options)
