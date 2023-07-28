@@ -120,9 +120,8 @@ def test_cli_material_mode(tmpdir, mode):
         f'--material-mode={mode}'
     ])
 
-# TODO: Uncomment when panda3d-gltf 0.11 is released
-# @pytest.mark.parametrize('mode', ['separate', 'embed', 'skip'])
-# def test_cli_anims(tmpdir, mode):
-#     run_cli_test(tmpdir, src=os.path.join(SRCDIR, 'pose_mode.blend'), extra_args=[
-#         f'--animations={mode}'
-#     ])
+@pytest.mark.parametrize('mode', ['separate', 'embed', 'skip'])
+def test_cli_anims(tmpdir, mode):
+    run_cli_test(tmpdir, src=os.path.join(SRCDIR, 'pose_mode.blend'), extra_args=[
+        f'--animations={mode}'
+    ])
