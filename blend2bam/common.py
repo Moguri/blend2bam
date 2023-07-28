@@ -14,6 +14,7 @@ class Settings:
     invisible_collisions_collection: str = 'InvisibleCollisions'
     verbose: bool = False
     dump_info: bool = False
+    allow_double_sided_materials: bool = False
 
 
 class ConverterBase:

@@ -1,7 +1,10 @@
+# pylint: disable=invalid-name
 import os
 import sys
 
 import pytest
+
+import panda3d.core as p3d
 
 import blend2bam
 import blend2bam.cli
@@ -26,8 +29,18 @@ def run_cli_test(tmpdir, src=TESTBLEND, extra_args=None):
     blend2bam.cli.main()
     assert os.path.exists(tmpdir)
     assert not os.path.exists(os.path.join(tmpdir, 'test.gltf'))
-    assert os.path.exists(os.path.join(tmpdir, 'output.bam'))
 
+    output_path = os.path.join(tmpdir, 'output.bam')
+    assert os.path.exists(output_path)
+
+    return p3d.Filename.from_os_specific(output_path)
+
+
+def load_model(modelpath):
+    loader = p3d.Loader.get_global_ptr()
+    model = loader.load_sync(modelpath)
+    assert model
+    return model
 
 def test_cli_single(tmpdir):
     run_cli_test(tmpdir)
@@ -125,3 +138,19 @@ def test_cli_anims(tmpdir, mode):
     run_cli_test(tmpdir, src=os.path.join(SRCDIR, 'pose_mode.blend'), extra_args=[
         f'--animations={mode}'
     ])
+
+def test_cli_force_single_sided_materials(tmpdir):
+    modelpath = run_cli_test(tmpdir)
+    model = load_model(modelpath)
+
+    np = p3d.NodePath(model)
+    for mat in np.find_all_materials():
+        assert not mat.get_twoside()
+
+def test_cli_allow_double_sided_materials(tmpdir):
+    modelpath = run_cli_test(tmpdir, extra_args=['--allow-double-sided-materials'])
+    model = load_model(modelpath)
+
+    np = p3d.NodePath(model)
+    for mat in np.find_all_materials():
+        assert  mat.get_twoside()

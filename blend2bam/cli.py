@@ -167,6 +167,13 @@ def main():
              'will be exported without a visible geom node'
     )
 
+    parser.add_argument(
+        '--allow-double-sided-materials',
+        action='store_true',
+        help='allow exporting double-sided materials ' \
+             '(otherwise force all materials to be single-sided)'
+    )
+
     args = parser.parse_args()
 
     if args.srcdir:
@@ -213,6 +220,7 @@ def main():
         animations=args.animations,
         invisible_collisions_collection=args.invisible_collisions_collection,
         verbose=args.verbose,
+        allow_double_sided_materials=args.allow_double_sided_materials,
     )
 
     convert(settings, srcdir, src, dst)

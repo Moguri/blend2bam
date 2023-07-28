@@ -167,6 +167,10 @@ def prepare_meshes():
             except RuntimeError as exc:
                 print(f'Failed to apply modifier {modifier.name} on {obj.name}: {exc}')
 
+def force_single_sided_materials(gltf_data):
+    for mat in gltf_data.get('materials', []):
+        mat['doubleSided'] = False
+
 def export_gltf(settings, src, dst):
     if settings['verbose']:
         print('Converting .blend file ({}) to .gltf ({})'.format(src, dst))
@@ -215,6 +219,8 @@ def export_gltf(settings, src, dst):
     export_physics(gltf_data, settings)
     if settings['textures'] == 'ref':
         fix_image_uri(gltf_data)
+    if not settings['allow_double_sided_materials']:
+        force_single_sided_materials(gltf_data)
     with open(dst, 'w') as gltf_file:
         json.dump(gltf_data, gltf_file, indent=4)
 
