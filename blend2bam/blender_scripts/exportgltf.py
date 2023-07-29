@@ -184,7 +184,7 @@ def export_gltf(settings, src, dst):
     os.makedirs(dstdir, exist_ok=True)
 
     make_particles_real()
-    if 'export_animation_mode' not in exporter_options:
+    if not settings['animations'] != 'skip' and 'export_animation_mode' not in exporter_options:
         add_actions_to_nla()
 
     prepare_meshes()
