@@ -32,7 +32,7 @@ class ConverterGltf2Bam(ConverterBase):
         super().__init__(settings)
 
         self.cli_args = {
-            'physics-engine': self.settings.physics_engine,
+            'collision-shapes': self.settings.physics_engine,
             'skip-axis-conversion': True,
             'no-srgb': self.settings.no_srgb,
         }
