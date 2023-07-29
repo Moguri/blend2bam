@@ -209,7 +209,7 @@ def export_gltf(settings, src, dst):
     if 'export_keep_originals' in exporter_options and settings['textures'] == 'ref':
         exp_opts['export_keep_originals'] = True
     if 'export_optimize_animation_size' in exporter_options:
-        exp_opts['export_optimize_animation_size'] = True
+        exp_opts['export_optimize_animation_size'] = False
 
     bpy.ops.export_scene.gltf(**exp_opts)
 
