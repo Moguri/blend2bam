@@ -52,10 +52,9 @@ If it is not, the directory containing `blender` can be specified with `--blende
 ### CLI
 
 ```
-usage: blend2bam [-h] [--version] [-m {legacy,pbr}] [--physics-engine {builtin,bullet}] [--srcdir SRCDIR] [--blender-dir BLENDER_DIR]
-                 [--blender-bin BLENDER_BIN] [--append-ext] [--no-srgb] [--textures {ref,copy,embed}]
-                 [--animations {embed,separate,skip}] [--invisible-collisions-collection INVISIBLE_COLLISIONS_COLLECTION]
-                 src [src ...] dst
+usage: blend2bam [-h] [--version] [-v] [-m {legacy,pbr}] [--physics-engine {builtin,bullet}] [--srcdir SRCDIR] [--blender-dir BLENDER_DIR] [--blender-bin BLENDER_BIN]
+                 [--append-ext] [--no-srgb] [--textures {ref,copy,embed}] [--animations {embed,separate,skip}] [--invisible-collisions-collection INVISIBLE_COLLISIONS_COLLECTION]
+                 [--allow-double-sided-materials] src [src ...] dst
 
 CLI tool to convert Blender blend files to Panda3D BAM files
 
@@ -66,6 +65,7 @@ positional arguments:
 options:
   -h, --help            show this help message and exit
   --version             show program's version number and exit
+  -v, --verbose         print out extra information (default: False)
   -m {legacy,pbr}, --material-mode {legacy,pbr}
                         control how materials are exported (default: pbr)
   --physics-engine {builtin,bullet}
@@ -83,6 +83,8 @@ options:
                         how to handle animation data (default: embed)
   --invisible-collisions-collection INVISIBLE_COLLISIONS_COLLECTION
                         name of a collection in blender whose collision objects will be exported without a visible geom node (default: InvisibleCollisions)
+  --allow-double-sided-materials
+                        allow exporting double-sided materials (otherwise force all materials to be single-sided) (default: False)
 ```
 
 ### Python File Loader
