@@ -12,6 +12,7 @@ authors = [
     {name = "Mitchell Stokes"},
 ]
 description = "A tool to convert Blender blend files to Panda3D BAM files"
+readme = "README.md"
 keywords = ["panda3d", "gamedev"]
 license = {text = "MIT"}
 classifiers = [
