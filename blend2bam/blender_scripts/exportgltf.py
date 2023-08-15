@@ -210,6 +210,10 @@ def export_gltf(settings, src, dst):
         exp_opts['export_keep_originals'] = True
     if 'export_optimize_animation_size' in exporter_options:
         exp_opts['export_optimize_animation_size'] = False
+    if 'convert_lighting_mode' in exporter_options:
+        exp_opts['convert_lighting_mode'] = 'RAW'
+    if 'export_import_convert_lighting_mode' in exporter_options:
+        exp_opts['export_import_convert_lighting_mode'] = 'RAW'
 
     bpy.ops.export_scene.gltf(**exp_opts)
 
