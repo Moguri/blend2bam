@@ -22,7 +22,14 @@ def _get_binpath(blenderdir, blenderbin):
 
 def run_blender(args, blenderdir='', blenderbin='blender'):
     binpath = _get_binpath(blenderdir, blenderbin)
-    subprocess.check_call(binpath + ['--background'] + args, stdout=None)#subprocess.DEVNULL)
+    envvar = os.environ | {
+        'PYTHONUNBUFFERED': 'on'
+    }
+    subprocess.check_call(
+        binpath + ['--background', '--python-use-system-env'] + args,
+        env=envvar,
+        stdout=None
+    )
 
 
 def run_blender_script(script, args, blenderdir='', blenderbin='blender'):
