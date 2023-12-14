@@ -189,10 +189,17 @@ def export_gltf(settings, src, dst):
 
     prepare_meshes()
 
+    export_format = 'GLTF_SEPARATE'
+    if settings['textures'] == 'embed':
+        if bpy.app.version >= (4, 0, 0):
+            print('warning: embedding textures is not currently supported by blend2bam with Blender 4.0+')
+        else:
+            export_format = 'GLTF_EMBEDDED'
+
 
     exp_opts = {
         'filepath': dst,
-        'export_format': 'GLTF_EMBEDDED' if settings['textures'] == 'embed' else 'GLTF_SEPARATE',
+        'export_format': export_format,
         'export_cameras': True,
         'export_extras': True,
         'export_yup': False,
