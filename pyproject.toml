@@ -22,7 +22,7 @@ classifiers = [
 ]
 dependencies = [
     "panda3d",
-    "panda3d-gltf ~= 1.0",
+    "panda3d-gltf ~= 1.1.0",
 ]
 requires-python = ">= 3.8"
 
