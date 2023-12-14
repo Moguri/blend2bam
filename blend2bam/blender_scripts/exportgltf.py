@@ -221,6 +221,8 @@ def export_gltf(settings, src, dst):
         exp_opts['convert_lighting_mode'] = 'RAW'
     if 'export_import_convert_lighting_mode' in exporter_options:
         exp_opts['export_import_convert_lighting_mode'] = 'RAW'
+    if 'export_try_sparse_sk' in exporter_options:
+        exp_opts['export_try_sparse_sk'] = False
 
     bpy.ops.export_scene.gltf(**exp_opts)
 
