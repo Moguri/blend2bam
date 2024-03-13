@@ -3,29 +3,33 @@ on: [push, pull_request]
 
 jobs:
   tests:
-    runs-on: ubuntu-latest
     strategy:
       matrix:
-        blender: [latest, 3.6lts, 3.3lts, 2.93lts, 2.83lts]
+        blender: [latest, '3.6']
+        os: [ubuntu-latest, windows-latest]
+        pyversion: ['3.8']
+    runs-on: ${{ matrix.os }}
     steps:
-    - uses: actions/checkout@v3
-    - uses: actions/setup-python@v4
+    - uses: actions/checkout@v4
+    - uses: actions/setup-python@v5
       with:
-        python-version: 3.8
-    - name: Install Blender
-      run: |
-        sudo apt-get install -y libglu1-mesa
-        sudo snap install blender --channel=${{ matrix.blender }}/stable --classic
+        python-version: ${{ matrix.pyversion }}
+        cache: pip
+    - uses: Moguri/setup-blender@v1
+      id: setup-blender
+      with:
+        blender-version: ${{ matrix.blender }}
     - name: Run Tests
       run: |
+        blender --version
         python -m pip install -e .[test]
         python -m pytest
   build_publish:
     needs: tests
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
-    - uses: actions/setup-python@v4
+    - uses: actions/checkout@v4
+    - uses: actions/setup-python@v5
       with:
         python-version: 3.8
     - name: Build package
