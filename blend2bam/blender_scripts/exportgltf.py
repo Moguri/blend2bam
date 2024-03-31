@@ -178,7 +178,8 @@ def export_gltf(settings, src, dst):
         from io_scene_gltf2.io.com.gltf2_io_debug import set_output_level #pylint: disable=import-error
         set_output_level('WARNING')
 
-    exporter_options = bpy.ops.export_scene.gltf.get_rna_type().properties.keys()
+    exporter_properties = bpy.ops.export_scene.gltf.get_rna_type().properties
+    exporter_options = exporter_properties.keys()
 
     dstdir = os.path.dirname(dst)
     os.makedirs(dstdir, exist_ok=True)
@@ -191,10 +192,10 @@ def export_gltf(settings, src, dst):
 
     export_format = 'GLTF_SEPARATE'
     if settings['textures'] == 'embed':
-        if bpy.app.version >= (4, 0, 0):
-            print('warning: embedding textures is not currently supported by blend2bam with Blender 4.0+')
-        else:
+        if 'GLTF_EMBEDDED' in exporter_properties['export_format'].enum_items:
             export_format = 'GLTF_EMBEDDED'
+        else:
+            print('warning: embedding textures is not supported by this version of Blender')
 
 
     exp_opts = {
@@ -258,6 +259,9 @@ def convert_files(convertfn, outputext):
         print('Exporting:', blendfiles)
         print('Export to:', dstdir)
 
+    addon_prefs = bpy.context.preferences.addons['io_scene_gltf2'].preferences
+    if 'allow_embedded_format' in addon_prefs:
+        addon_prefs['allow_embedded_format'] = True
 
     try:
         for blendfile in blendfiles:
