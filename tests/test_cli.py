@@ -48,10 +48,19 @@ def test_cli_single(tmpdir):
 
 
 def test_cli_relative(tmpdir):
+    src = os.path.join(SRCDIR, 'test.blend')
+    relsrc = os.path.relpath(src)
+    dst = os.path.join(tmpdir, 'output.bam')
+    try:
+        reldst = os.path.relpath(dst)
+    except ValueError:
+        # No relative path avaialable (e.g., different drive on Windows),
+        # just keep the dst absolute then
+        reldst = dst
     args = [
         'python',
-        os.path.relpath(os.path.join(SRCDIR, 'test.blend')),
-        os.path.relpath(os.path.join(tmpdir, 'output.bam')),
+        relsrc,
+        reldst,
     ]
     sys.argv = args
     blend2bam.cli.main()
