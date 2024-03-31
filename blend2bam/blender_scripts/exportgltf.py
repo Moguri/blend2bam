@@ -93,6 +93,7 @@ def export_physics(gltf_data, settings):
 
 
 def fix_image_uri(gltf_data):
+    bpy.ops.file.make_paths_absolute()
     blender_imgs = {
         (os.path.basename(i.filepath) or i.name).rsplit('.', 1)[0]: i
         for i in bpy.data.images
