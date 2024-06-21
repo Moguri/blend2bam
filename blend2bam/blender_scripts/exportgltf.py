@@ -1,8 +1,13 @@
 import json
+import math
 import os
 import sys
 
 import bpy #pylint: disable=import-error
+
+
+# Taken from Blender glTF exporter
+PBR_WATTS_TO_LUMENS = 683
 
 
 def make_particles_real():
@@ -109,6 +114,46 @@ def fix_image_uri(gltf_data):
                 if filepath.startswith('//'):
                     filepath = filepath[2:]
                 img['uri'] = filepath
+
+
+def fix_lights(gltf_data, gltf_lights_lumens):
+    blender_lights_lumens = tuple(bpy.app.version[:2]) >= (3, 4)
+
+    # print(f'{blender_lights_lumens=} {gltf_lights_lumens=}')
+    if blender_lights_lumens == gltf_lights_lumens:
+        return
+
+    lights = (
+        gltf_data
+        .get('extensions', {})
+        .get('KHR_lights_punctual', {})
+        .get('lights', {})
+    )
+
+    pi4 = math.pi * 4
+
+    def watts_to_lumens(gltf_light):
+        intensity = gltf_light['intensity']
+        if gltf_light['type'] != 'directional':
+            intensity /= pi4
+        gltf_light['intensity'] = intensity * PBR_WATTS_TO_LUMENS
+
+    def lumens_to_watts(gltf_light):
+        intensity = gltf_light['intensity'] / PBR_WATTS_TO_LUMENS
+        if gltf_light['type'] != 'directional':
+            intensity *= pi4
+        gltf_light['intensity'] = intensity
+
+    for light in lights:
+        if 'intensity' not in light:
+            continue
+
+        print(light)
+        if gltf_lights_lumens:
+            watts_to_lumens(light)
+        else:
+            lumens_to_watts(light)
+        print(light)
 
 
 def add_actions_to_nla():
@@ -219,10 +264,6 @@ def export_gltf(settings, src, dst):
         exp_opts['export_keep_originals'] = True
     if 'export_optimize_animation_size' in exporter_options:
         exp_opts['export_optimize_animation_size'] = False
-    if 'convert_lighting_mode' in exporter_options:
-        exp_opts['convert_lighting_mode'] = 'RAW'
-    if 'export_import_convert_lighting_mode' in exporter_options:
-        exp_opts['export_import_convert_lighting_mode'] = 'RAW'
     if 'export_try_sparse_sk' in exporter_options:
         exp_opts['export_try_sparse_sk'] = False
 
@@ -232,6 +273,7 @@ def export_gltf(settings, src, dst):
         gltf_data = json.load(gltf_file)
 
     export_physics(gltf_data, settings)
+    fix_lights(gltf_data, settings['gltf_lights_lumens'])
     if settings['textures'] == 'ref':
         fix_image_uri(gltf_data)
     if not settings['allow_double_sided_materials']:
