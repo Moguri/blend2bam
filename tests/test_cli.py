@@ -52,28 +52,34 @@ def test_cli_single(tmpdir):
 def test_cli_relative(tmpdir):
     tmpdirpath = Path(tmpdir)
 
-    # Copy input file to make sure src is on the same Windows drive as temp
-    os.chdir(tmpdir)
-    src = Path(SRCDIR) / 'test.blend'
-    newsrc = tmpdirpath / 'input' / 'test.blend'
-    newsrc.parent.mkdir(parents=True)
-    shutil.copyfile(src, newsrc)
-    src = newsrc
-    relsrc = src.relative_to(Path().absolute())
+    prevpwd = Path.cwd()
+    os.chdir(tmpdirpath)
 
-    # Create another directory to store the output
-    dst = tmpdirpath / 'output' / 'output.bam'
-    dst.parent.mkdir(parents=True)
-    reldst = dst.relative_to(Path().absolute())
+    try:
+        # Copy input file to make sure src is on the same Windows drive as temp
+        os.chdir(tmpdir)
+        src = Path(SRCDIR) / 'test.blend'
+        newsrc = tmpdirpath / 'input' / 'test.blend'
+        newsrc.parent.mkdir(parents=True)
+        shutil.copyfile(src, newsrc)
+        src = newsrc
+        relsrc = src.relative_to(Path().absolute())
 
-    args = [
-        'python',
-        relsrc.as_posix(),
-        reldst.as_posix(),
-    ]
-    sys.argv = args
-    blend2bam.cli.main()
-    assert dst.exists()
+        # Create another directory to store the output
+        dst = tmpdirpath / 'output' / 'output.bam'
+        dst.parent.mkdir(parents=True)
+        reldst = dst.relative_to(Path().absolute())
+
+        args = [
+            'python',
+            relsrc.as_posix(),
+            reldst.as_posix(),
+        ]
+        sys.argv = args
+        blend2bam.cli.main()
+        assert dst.exists()
+    finally:
+        os.chdir(prevpwd)
 
 
 def test_cli_single_to_dir(tmpdir):
