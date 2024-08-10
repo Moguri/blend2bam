@@ -1,5 +1,7 @@
 # pylint: disable=invalid-name
 import os
+from pathlib import Path
+import shutil
 import sys
 
 import pytest
@@ -48,25 +50,30 @@ def test_cli_single(tmpdir):
 
 
 def test_cli_relative(tmpdir):
-    src = os.path.join(SRCDIR, 'test.blend')
-    relsrc = os.path.relpath(src)
-    dst = os.path.join(tmpdir, 'output.bam')
-    try:
-        reldst = os.path.relpath(dst)
-    except ValueError:
-        # No relative path avaialable (e.g., different drive on Windows),
-        # just keep the dst absolute then
-        reldst = dst
+    tmpdirpath = Path(tmpdir)
+
+    # Copy input file to make sure src is on the same Windows drive as temp
+    os.chdir(tmpdir)
+    src = Path(SRCDIR) / 'test.blend'
+    newsrc = tmpdirpath / 'input' / 'test.blend'
+    newsrc.parent.mkdir(parents=True)
+    shutil.copyfile(src, newsrc)
+    src = newsrc
+    relsrc = src.relative_to(Path().absolute())
+
+    # Create another directory to store the output
+    dst = tmpdirpath / 'output' / 'output.bam'
+    dst.parent.mkdir(parents=True)
+    reldst = dst.relative_to(Path().absolute())
+
     args = [
         'python',
-        relsrc,
-        reldst,
+        relsrc.as_posix(),
+        reldst.as_posix(),
     ]
     sys.argv = args
     blend2bam.cli.main()
-    assert os.path.exists(tmpdir)
-    assert not os.path.exists(os.path.join(tmpdir, 'test.gltf'))
-    assert os.path.exists(os.path.join(tmpdir, 'output.bam'))
+    assert dst.exists()
 
 
 def test_cli_single_to_dir(tmpdir):
