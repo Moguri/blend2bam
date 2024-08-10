@@ -221,8 +221,12 @@ def export_gltf(settings, src, dst):
     if settings['verbose']:
         print('Converting .blend file ({}) to .gltf ({})'.format(src, dst))
     else:
-        from io_scene_gltf2.io.com.gltf2_io_debug import set_output_level #pylint: disable=import-error
-        set_output_level('WARNING')
+        try:
+            from io_scene_gltf2.io.com.gltf2_io_debug import set_output_level #pylint: disable=import-error
+            set_output_level('WARNING')
+        except ImportError:
+            # Blender 4.2+ have removed this function, still need to find a replacement
+            pass
 
     exporter_properties = bpy.ops.export_scene.gltf.get_rna_type().properties
     exporter_options = exporter_properties.keys()

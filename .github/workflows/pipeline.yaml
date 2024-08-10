@@ -5,7 +5,7 @@ jobs:
   tests:
     strategy:
       matrix:
-        blender: [latest, '3.6']
+        blender: [latest, '4.2', '3.6']
         os: [ubuntu-latest, windows-latest]
         pyversion: ['3.8']
     runs-on: ${{ matrix.os }}
