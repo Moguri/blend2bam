@@ -307,6 +307,8 @@ def convert_files(convertfn, outputext):
         print('Export to:', dstdir)
 
     addon_prefs = bpy.context.preferences.addons['io_scene_gltf2'].preferences
+    if addon_prefs is None:
+        addon_prefs = []
     if 'allow_embedded_format' in addon_prefs:
         addon_prefs['allow_embedded_format'] = True
 

@@ -57,8 +57,11 @@ def get_blender_version(blenderdir='', blenderbin='blender'):
 
     output = subprocess.check_output(binpath + ['--version'])
     output = output.decode('utf8')
-    version = [int(i) for i in output.split()[1].split('.')]
-    return version
+    for line in output.splitlines():
+        if line.startswith('Blender'):
+            return [int(i) for i in line.split()[1].split('.')]
+
+    raise RuntimeError('Could not find version string in "blender --version" output')
 
 
 @functools.lru_cache(maxsize=None)
