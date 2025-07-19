@@ -29,8 +29,12 @@ requires-python = ">= 3.8"
 [project.urls]
 homepage = "https://github.com/Moguri/blend2bam"
 
-[project.optional-dependencies]
-test = ["pytest", "pylint~=2.4.0", "pytest-pylint"]
+[dependency-groups]
+dev = [
+    "pytest",
+    "pylint ~= 2.4.0",
+    "pytest-pylint",
+]
 
 [project.scripts]
 blend2bam = "blend2bam.cli:main"

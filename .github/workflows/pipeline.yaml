@@ -11,10 +11,9 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
     - uses: actions/checkout@v4
-    - uses: actions/setup-python@v5
+    - uses: actions/setup-uv@6
       with:
         python-version: ${{ matrix.pyversion }}
-        cache: pip
     - uses: Moguri/setup-blender@v1
       id: setup-blender
       with:
@@ -22,20 +21,18 @@ jobs:
     - name: Run Tests
       run: |
         blender --version
-        python -m pip install -e .[test]
-        python -m pytest
+        uv sync
+        uv run pytest
   build_publish:
     needs: tests
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
-    - uses: actions/setup-python@v5
-      with:
-        python-version: 3.8
+    - uses: actions/setup-uv@6
     - name: Build package
       run: |
-        python -m pip install --upgrade build
-        python -m build
+        uv sync
+        uv build
     - name: Publish package
       if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags')
       uses: pypa/gh-action-pypi-publish@release/v1

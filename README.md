@@ -91,32 +91,21 @@ options:
 `blend2bam` also supports Panda3D's Python file loader API (requires Panda3D 1.10.4+) to seamlessly adds blend file support to Panda3D's `Loader` classes.
 This *does not* add support to `pview`, which is a C++ application that does not support Python file loaders.
 
-## Running Tests
+## Development
 
-First install `blend2bam` in editable mode along with `test` extras:
+This repo uses [uv](https://docs.astral.sh/uv/).
+After installing `uv`, run `uv sync` to get dependencies (including dev dependencies)
+
+### Running Tests
 
 ```bash
-pip install -e .[test]
+uv run pytest
 ```
 
-Then run the test suite with `pytest`:
+### Building Wheels
 
 ```bash
-python -m pytest
-```
-
-## Building Wheels
-
-Install `build`:
-
-```bash
-pip install --upgrade build
-```
-
-and run:
-
-```bash
-python -m build
+uv build
 ```
 
 ## License
