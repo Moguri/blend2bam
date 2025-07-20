@@ -11,7 +11,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
     - uses: actions/checkout@v4
-    - uses: actions/setup-uv@6
+    - uses: astral-sh/setup-uv@v6
       with:
         python-version: ${{ matrix.pyversion }}
     - uses: Moguri/setup-blender@v1
@@ -28,7 +28,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
-    - uses: actions/setup-uv@6
+    - uses: astral-sh/setup-uv@v6
     - name: Build package
       run: |
         uv sync
